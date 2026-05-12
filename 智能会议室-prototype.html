@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智能会议室 - Smart Meeting Room</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:wght@400;600;700;900&family=Source+Serif+4:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --transition-speed: 0.4s;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-panel: rgba(17, 24, 39, 0.85);
+  --bg-card: rgba(30, 41, 59, 0.7);
+  --bg-hover: rgba(56, 189, 248, 0.08);
+  --border-color: rgba(56, 189, 248, 0.15);
+  --border-glow: rgba(56, 189, 248, 0.4);
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent-primary: #38bdf8;
+  --accent-secondary: #818cf8;
+  --accent-tertiary: #34d399;
+  --accent-warn: #fbbf24;
+  --accent-danger: #f87171;
+  --glow-color: rgba(56, 189, 248, 0.3);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.5);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.6);
+  --font-heading: 'Orbitron', sans-serif;
+  --font-body: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  --font-ui: 'Outfit', 'Noto Sans SC', sans-serif;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --keyword-bg: rgba(56, 189, 248, 0.12);
+  --keyword-border: rgba(56, 189, 248, 0.4);
+  --keyword-active-bg: rgba(56, 189, 248, 0.25);
+  --step-line: rgba(56, 189, 248, 0.3);
+  --node-fill: #38bdf8;
+  --node-stroke: #818cf8;
+  --link-color: rgba(56, 189, 248, 0.4);
+  --graph-bg: rgba(10, 14, 26, 0.5);
+  --btn-primary-bg: linear-gradient(135deg, #38bdf8, #818cf8);
+  --btn-primary-text: #0a0e1a;
+  --btn-secondary-bg: rgba(56, 189, 248, 0.1);
+  --btn-secondary-text: #38bdf8;
+  --btn-secondary-border: rgba(56, 189, 248, 0.3);
+  --scrollbar-track: rgba(17, 24, 39, 0.5);
+  --scrollbar-thumb: rgba(56, 189, 248, 0.3);
+  --overlay-bg: rgba(10, 14, 26, 0.9);
+  --dialogue-speaker-a: #38bdf8;
+  --dialogue-speaker-b: #818cf8;
+  --dialogue-speaker-c: #34d399;
+  --dialogue-speaker-d: #fbbf24;
+}
+
+[data-theme="light"] {
+  --bg-primary: #fafbfc;
+  --bg-secondary: #ffffff;
+  --bg-panel: rgba(255, 255, 255, 0.95);
+  --bg-card: rgba(248, 250, 252, 0.9);
+  --bg-hover: rgba(99, 102, 241, 0.04);
+  --border-color: rgba(226, 232, 240, 0.8);
+  --border-glow: rgba(99, 102, 241, 0.2);
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --accent-primary: #6366f1;
+  --accent-secondary: #8b5cf6;
+  --accent-tertiary: #10b981;
+  --accent-warn: #f59e0b;
+  --accent-danger: #ef4444;
+  --glow-color: rgba(99, 102, 241, 0.1);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.1);
+  --font-heading: 'Outfit', 'Noto Sans SC', sans-serif;
+  --font-body: 'Outfit', 'Noto Sans SC', sans-serif;
+  --font-ui: 'Outfit', 'Noto Sans SC', sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --keyword-bg: rgba(99, 102, 241, 0.06);
+  --keyword-border: rgba(99, 102, 241, 0.2);
+  --keyword-active-bg: rgba(99, 102, 241, 0.12);
+  --step-line: rgba(99, 102, 241, 0.2);
+  --node-fill: #6366f1;
+  --node-stroke: #8b5cf6;
+  --link-color: rgba(99, 102, 241, 0.3);
+  --graph-bg: rgba(248, 250, 252, 0.8);
+  --btn-primary-bg: linear-gradient(135deg, #6366f1, #8b5cf6);
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: rgba(99, 102, 241, 0.06);
+  --btn-secondary-text: #6366f1;
+  --btn-secondary-border: rgba(99, 102, 241, 0.2);
+  --scrollbar-track: rgba(241, 245, 249, 0.8);
+  --scrollbar-thumb: rgba(99, 102, 241, 0.2);
+  --overlay-bg: rgba(255, 255, 255, 0.95);
+  --dialogue-speaker-a: #6366f1;
+  --dialogue-speaker-b: #8b5cf6;
+  --dialogue-speaker-c: #10b981;
+  --dialogue-speaker-d: #f59e0b;
+}
+
+[data-theme="academic"] {
+  --bg-primary: #fdf6e3;
+  --bg-secondary: #faf3e0;
+  --bg-panel: rgba(250, 243, 224, 0.95);
+  --bg-card: rgba(253, 246, 227, 0.9);
+  --bg-hover: rgba(180, 83, 9, 0.04);
+  --border-color: rgba(180, 83, 9, 0.12);
+  --border-glow: rgba(180, 83, 9, 0.25);
+  --text-primary: #3c2415;
+  --text-secondary: #6b4c35;
+  --text-muted: #a08060;
+  --accent-primary: #b45309;
+  --accent-secondary: #92400e;
+  --accent-tertiary: #166534;
+  --accent-warn: #ca8a04;
+  --accent-danger: #dc2626;
+  --glow-color: rgba(180, 83, 9, 0.08);
+  --shadow-sm: 0 1px 4px rgba(60,36,21,0.06);
+  --shadow-md: 0 4px 16px rgba(60,36,21,0.08);
+  --shadow-lg: 0 8px 32px rgba(60,36,21,0.1);
+  --font-heading: 'Playfair Display', 'Noto Serif SC', serif;
+  --font-body: 'Source Serif 4', 'Noto Serif SC', serif;
+  --font-ui: 'Source Serif 4', 'Noto Serif SC', serif;
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --keyword-bg: rgba(180, 83, 9, 0.06);
+  --keyword-border: rgba(180, 83, 9, 0.25);
+  --keyword-active-bg: rgba(180, 83, 9, 0.12);
+  --step-line: rgba(180, 83, 9, 0.2);
+  --node-fill: #b45309;
+  --node-stroke: #92400e;
+  --link-color: rgba(180, 83, 9, 0.3);
+  --graph-bg: rgba(253, 246, 227, 0.6);
+  --btn-primary-bg: linear-gradient(135deg, #b45309, #92400e);
+  --btn-primary-text: #fdf6e3;
+  --btn-secondary-bg: rgba(180, 83, 9, 0.06);
+  --btn-secondary-text: #b45309;
+  --btn-secondary-border: rgba(180, 83, 9, 0.25);
+  --scrollbar-track: rgba(250, 243, 224, 0.8);
+  --scrollbar-thumb: rgba(180, 83, 9, 0.2);
+  --overlay-bg: rgba(253, 246, 227, 0.95);
+  --dialogue-speaker-a: #b45309;
+  --dialogue-speaker-b: #92400e;
+  --dialogue-speaker-c: #166534;
+  --dialogue-speaker-d: #ca8a04;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background var(--transition-speed), color var(--transition-speed);
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+
+.app {
+  display: grid;
+  grid-template-rows: 60px 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ===== TOP BAR ===== */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  z-index: 100;
+  transition: all var(--transition-speed);
+}
+
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+
+.logo {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent-primary);
+  letter-spacing: 1px;
+}
+
+.meeting-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-left: 16px;
+  border-left: 1px solid var(--border-color);
+}
+
+.meeting-title { font-family: var(--font-ui); font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+.meeting-duration { font-family: var(--font-body); font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+.recording-indicator { display: flex; align-items: center; gap: 6px; opacity: 0; transition: opacity 0.3s; }
+.recording-indicator.active { opacity: 1; }
+.recording-dot { width: 8px; height: 8px; background: var(--accent-danger); border-radius: 50%; animation: pulse-dot 1.5s infinite; }
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.recording-text { font-size: 11px; color: var(--accent-danger); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.topbar-center { display: flex; align-items: center; gap: 8px; }
+
+.ctrl-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border: 1px solid var(--border-color);
+  border-radius: var(--radius-md); background: var(--bg-card);
+  color: var(--text-secondary); font-family: var(--font-ui);
+  font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+}
+.ctrl-btn:hover { border-color: var(--border-glow); background: var(--bg-hover); color: var(--text-primary); box-shadow: 0 0 12px var(--glow-color); }
+.ctrl-btn.primary { background: var(--btn-primary-bg); color: var(--btn-primary-text); border: none; font-weight: 600; }
+.ctrl-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px var(--glow-color); }
+.ctrl-btn.danger { border-color: var(--accent-danger); color: var(--accent-danger); }
+.ctrl-btn.danger:hover { background: rgba(248, 113, 113, 0.1); }
+.ctrl-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+.ctrl-btn svg { width: 13px; height: 13px; }
+
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+
+.theme-switcher {
+  display: flex; align-items: center; gap: 3px;
+  padding: 3px; background: var(--bg-card);
+  border: 1px solid var(--border-color); border-radius: var(--radius-md);
+}
+
+.theme-btn {
+  display: flex; align-items: center; gap: 4px;
+  padding: 5px 10px; border: none; border-radius: var(--radius-sm);
+  background: transparent; color: var(--text-muted);
+  font-family: var(--font-ui); font-size: 11px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.theme-btn:hover { color: var(--text-secondary); background: var(--bg-hover); }
+.theme-btn.active { background: var(--accent-primary); color: var(--btn-primary-text); box-shadow: 0 2px 8px var(--glow-color); }
+.theme-btn svg { width: 11px; height: 11px; }
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ===== LEFT PANEL ===== */
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  transition: all var(--transition-speed);
+  overflow: hidden;
+}
+
+/* Dialogue Section (top 1/3) */
+.dialogue-section {
+  flex: 0 0 33.333%;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+  background: var(--bg-card);
+}
+
+.section-title {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.section-title .icon { color: var(--accent-primary); }
+
+.section-badge {
+  padding: 2px 7px;
+  background: var(--keyword-bg);
+  border: 1px solid var(--keyword-border);
+  border-radius: 10px;
+  font-size: 10px;
+  color: var(--accent-primary);
+  font-weight: 500;
+}
+
+.dialogue-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 14px;
+}
+
+.dialogue-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--text-muted);
+  gap: 8px;
+}
+
+.dialogue-placeholder svg { width: 32px; height: 32px; opacity: 0.4; }
+.dialogue-placeholder p { font-size: 12px; line-height: 1.5; }
+
+.dialogue-msg {
+  display: flex;
+  gap: 8px;
+  padding: 6px 0;
+  animation: fadeSlideIn 0.3s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dialogue-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.dialogue-avatar.speaker-a { background: var(--dialogue-speaker-a); }
+.dialogue-avatar.speaker-b { background: var(--dialogue-speaker-b); }
+.dialogue-avatar.speaker-c { background: var(--dialogue-speaker-c); }
+.dialogue-avatar.speaker-d { background: var(--dialogue-speaker-d); }
+
+.dialogue-body { flex: 1; min-width: 0; }
+
+.dialogue-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+  font-family: var(--font-ui);
+}
+
+.dialogue-text {
+  font-size: 12px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.dialogue-text .streaming-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 13px;
+  background: var(--accent-primary);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: cursorBlink 0.8s infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Summary Section (bottom 2/3) */
+.summary-section {
+  flex: 0 0 66.666%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.summary-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 16px;
+}
+
+.summary-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--text-muted);
+  gap: 10px;
+}
+
+.summary-placeholder svg { width: 40px; height: 40px; opacity: 0.3; }
+.summary-placeholder p { font-size: 12px; line-height: 1.5; }
+
+/* Structured Summary Styles */
+.summary-block {
+  margin-bottom: 16px;
+  animation: summaryFadeIn 0.6s ease forwards;
+  opacity: 0;
+}
+
+@keyframes summaryFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.summary-block-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.summary-block-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background: var(--keyword-bg);
+  border: 1px solid var(--keyword-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.summary-block-icon svg { width: 11px; height: 11px; color: var(--accent-primary); }
+
+.summary-block-title {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.summary-block-time {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-block-body {
+  padding-left: 28px;
+}
+
+.summary-point {
+  position: relative;
+  padding: 4px 0 4px 12px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.summary-point::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  opacity: 0.6;
+}
+
+.summary-point strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.summary-highlight {
+  background: var(--keyword-bg);
+  padding: 1px 4px;
+  border-radius: 3px;
+  color: var(--accent-primary);
+  font-weight: 500;
+  font-size: 11px;
+}
+
+.summary-refresh-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  margin-bottom: 10px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+
+.summary-refresh-indicator .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-tertiary);
+  animation: pulse-dot 2s infinite;
+}
+
+/* ===== RIGHT PANEL ===== */
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-primary);
+  transition: all var(--transition-speed);
+}
+
+.keywords-section {
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+  background: var(--bg-secondary);
+  transition: all var(--transition-speed);
+}
+
+.keywords-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.keywords-title { font-family: var(--font-ui); font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+.keywords-count { font-size: 11px; color: var(--text-muted); }
+.keywords-list { display: flex; flex-wrap: wrap; gap: 7px; }
+
+.keyword-chip {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 12px; background: var(--keyword-bg);
+  border: 1px solid var(--keyword-border); border-radius: 18px;
+  font-family: var(--font-ui); font-size: 11px; font-weight: 500;
+  color: var(--text-secondary); cursor: pointer; transition: all 0.2s;
+  animation: chipAppear 0.4s ease forwards; opacity: 0;
+}
+
+@keyframes chipAppear {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.keyword-chip:hover { border-color: var(--accent-primary); color: var(--accent-primary); transform: translateY(-1px); box-shadow: 0 2px 8px var(--glow-color); }
+.keyword-chip.active { background: var(--keyword-active-bg); border-color: var(--accent-primary); color: var(--accent-primary); box-shadow: 0 0 12px var(--glow-color); }
+.keyword-chip .status-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-tertiary); animation: pulse-dot 2s infinite; }
+.keyword-chip .status-dot.completed { background: var(--accent-primary); animation: none; }
+
+.research-area { flex: 1; overflow-y: auto; padding: 20px 24px; position: relative; }
+
+.research-placeholder {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; height: 100%; text-align: center;
+  color: var(--text-muted); gap: 14px;
+}
+.research-placeholder svg { width: 56px; height: 56px; opacity: 0.3; }
+.research-placeholder h3 { font-family: var(--font-heading); font-size: 15px; font-weight: 600; color: var(--text-secondary); }
+.research-placeholder p { font-size: 12px; max-width: 300px; line-height: 1.6; }
+
+/* Research Steps */
+.research-steps { display: flex; flex-direction: column; gap: 18px; }
+
+.research-step {
+  position: relative; padding-left: 30px;
+  animation: stepAppear 0.6s ease forwards; opacity: 0;
+}
+
+@keyframes stepAppear {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.research-step::before {
+  content: ''; position: absolute; left: 11px; top: 26px; bottom: -18px;
+  width: 1px; background: var(--step-line);
+}
+.research-step:last-child::before { display: none; }
+
+.step-icon {
+  position: absolute; left: 0; top: 2px; width: 22px; height: 22px;
+  border-radius: 50%; background: var(--keyword-bg);
+  border: 2px solid var(--accent-primary);
+  display: flex; align-items: center; justify-content: center;
+}
+.step-icon svg { width: 11px; height: 11px; color: var(--accent-primary); }
+.step-icon.active { background: var(--accent-primary); animation: pulse-step 1.5s infinite; }
+.step-icon.active svg { color: var(--btn-primary-text); }
+@keyframes pulse-step { 0%, 100% { box-shadow: 0 0 0 0 var(--glow-color); } 50% { box-shadow: 0 0 0 5px transparent; } }
+.step-icon.done { background: var(--accent-tertiary); border-color: var(--accent-tertiary); }
+.step-icon.done svg { color: white; }
+
+.step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.step-title { font-family: var(--font-ui); font-size: 12px; font-weight: 600; color: var(--text-primary); }
+.step-status { font-size: 10px; color: var(--text-muted); padding: 2px 7px; background: var(--bg-card); border-radius: 8px; }
+
+.step-content {
+  background: var(--bg-card); border: 1px solid var(--border-color);
+  border-radius: var(--radius-md); padding: 14px; transition: all var(--transition-speed);
+}
+
+.step-thinking {
+  font-size: 11px; color: var(--text-muted); font-style: italic;
+  line-height: 1.6; margin-bottom: 10px; padding-bottom: 10px;
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.step-output { font-size: 12px; color: var(--text-secondary); line-height: 1.7; }
+
+/* Viz */
+.viz-container { margin-top: 10px; border-radius: var(--radius-md); overflow: hidden; background: var(--graph-bg); border: 1px solid var(--border-color); }
+.knowledge-graph { width: 100%; height: 260px; }
+.knowledge-graph .node { cursor: pointer; transition: all 0.2s; }
+.knowledge-graph .node text { font-family: var(--font-ui); font-size: 9px; fill: var(--text-primary); text-anchor: middle; pointer-events: none; }
+.knowledge-graph .link { stroke: var(--link-color); stroke-width: 1.5; fill: none; }
+
+.timeline-viz { margin-top: 10px; padding: 12px; background: var(--graph-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); }
+.timeline-item { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; position: relative; }
+.timeline-item::before { content: ''; position: absolute; left: 5px; top: 20px; bottom: -6px; width: 1px; background: var(--step-line); }
+.timeline-item:last-child::before { display: none; }
+.timeline-dot { width: 11px; height: 11px; border-radius: 50%; background: var(--accent-primary); flex-shrink: 0; margin-top: 3px; }
+.timeline-info { flex: 1; }
+.timeline-year { font-size: 10px; font-weight: 600; color: var(--accent-primary); margin-bottom: 1px; }
+.timeline-desc { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+
+.citations-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 10px; }
+.citation-card { padding: 9px 11px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); transition: all 0.2s; }
+.citation-card:hover { border-color: var(--accent-primary); transform: translateY(-1px); }
+.citation-source { font-size: 9px; color: var(--accent-primary); font-weight: 600; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.3px; }
+.citation-title { font-size: 10px; color: var(--text-primary); font-weight: 500; line-height: 1.4; margin-bottom: 2px; }
+.citation-meta { font-size: 9px; color: var(--text-muted); }
+
+.comparison-table { width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 10px; }
+.comparison-table th { background: var(--keyword-bg); padding: 7px 8px; text-align: left; font-weight: 600; color: var(--text-primary); border: 1px solid var(--border-color); }
+.comparison-table td { padding: 6px 8px; border: 1px solid var(--border-color); color: var(--text-secondary); line-height: 1.4; }
+.comparison-table tr:hover td { background: var(--bg-hover); }
+
+.credibility-bars { margin-top: 10px; display: flex; flex-direction: column; gap: 7px; }
+.cred-item { display: flex; align-items: center; gap: 8px; }
+.cred-label { font-size: 10px; color: var(--text-secondary); width: 110px; flex-shrink: 0; }
+.cred-bar { flex: 1; height: 5px; background: var(--bg-card); border-radius: 3px; overflow: hidden; border: 1px solid var(--border-color); }
+.cred-fill { height: 100%; border-radius: 3px; transition: width 1s ease; background: var(--accent-primary); }
+.cred-fill.high { background: var(--accent-tertiary); }
+.cred-fill.medium { background: var(--accent-warn); }
+.cred-fill.low { background: var(--accent-danger); }
+.cred-value { font-size: 10px; color: var(--text-muted); width: 32px; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Bottom Actions */
+.bottom-actions {
+  display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+  padding: 14px 24px; border-top: 1px solid var(--border-color);
+  background: var(--bg-secondary); flex-shrink: 0; transition: all var(--transition-speed);
+}
+
+.action-btn {
+  display: flex; align-items: center; gap: 7px; padding: 9px 18px;
+  border-radius: var(--radius-md); font-family: var(--font-ui);
+  font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+}
+.action-btn.primary { background: var(--btn-primary-bg); color: var(--btn-primary-text); border: none; }
+.action-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px var(--glow-color); }
+.action-btn.secondary { background: var(--btn-secondary-bg); color: var(--btn-secondary-text); border: 1px solid var(--btn-secondary-border); }
+.action-btn.secondary:hover { border-color: var(--accent-primary); box-shadow: 0 2px 8px var(--glow-color); }
+.action-btn svg { width: 14px; height: 14px; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  padding: 10px 20px; background: var(--bg-secondary);
+  border: 1px solid var(--border-color); border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg); font-family: var(--font-ui);
+  font-size: 12px; color: var(--text-primary); z-index: 1000;
+  transition: transform 0.3s ease; display: flex; align-items: center; gap: 8px;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast .toast-icon { color: var(--accent-tertiary); }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0; background: var(--overlay-bg);
+  backdrop-filter: blur(8px); display: flex; align-items: center;
+  justify-content: center; z-index: 200; opacity: 0;
+  pointer-events: none; transition: opacity 0.3s;
+}
+.modal-overlay.show { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--bg-secondary); border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg); padding: 28px; max-width: 380px;
+  width: 90%; box-shadow: var(--shadow-lg); transform: scale(0.95); transition: transform 0.3s;
+}
+.modal-overlay.show .modal { transform: scale(1); }
+.modal h3 { font-family: var(--font-heading); font-size: 15px; margin-bottom: 10px; color: var(--text-primary); }
+.modal p { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6; }
+.modal-input {
+  width: 100%; padding: 9px 12px; background: var(--bg-card);
+  border: 1px solid var(--border-color); border-radius: var(--radius-sm);
+  color: var(--text-primary); font-family: var(--font-ui); font-size: 12px;
+  margin-bottom: 14px; outline: none; transition: border-color 0.2s;
+}
+.modal-input:focus { border-color: var(--accent-primary); }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* Background effects */
+[data-theme="dark"] .app::before {
+  content: ''; position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(56, 189, 248, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(129, 140, 248, 0.03) 0%, transparent 50%),
+    linear-gradient(rgba(56, 189, 248, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.015) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+  pointer-events: none; z-index: 0;
+}
+
+[data-theme="dark"] .topbar,
+[data-theme="dark"] .left-panel,
+[data-theme="dark"] .right-panel,
+[data-theme="dark"] .keywords-section,
+[data-theme="dark"] .bottom-actions { position: relative; z-index: 1; }
+
+[data-theme="academic"] .app::before {
+  content: ''; position: fixed; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0;
+}
+
+[data-theme="academic"] .topbar,
+[data-theme="academic"] .left-panel,
+[data-theme="academic"] .right-panel,
+[data-theme="academic"] .keywords-section,
+[data-theme="academic"] .bottom-actions { position: relative; z-index: 1; }
+</style>
+</head>
+<body data-theme="dark">
+
+<div class="app">
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">智能会议室</div>
+      <div class="meeting-info">
+        <span class="meeting-title">蛋白质结构与功能前沿研讨会</span>
+        <span class="meeting-duration" id="duration">00:00:00</span>
+        <div class="recording-indicator" id="recordingIndicator">
+          <span class="recording-dot"></span>
+          <span class="recording-text">REC</span>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-center">
+      <button class="ctrl-btn primary" id="btnStart" onclick="startRecording()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16" fill="currentColor" stroke="none"/></svg>
+        开启
+      </button>
+      <button class="ctrl-btn" id="btnPause" onclick="pauseRecording()" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        暂停
+      </button>
+      <button class="ctrl-btn" id="btnResume" onclick="resumeRecording()" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21" fill="currentColor" stroke="none"/></svg>
+        继续
+      </button>
+      <button class="ctrl-btn danger" id="btnStop" onclick="stopRecording()" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+        停止
+      </button>
+    </div>
+    <div class="topbar-right">
+      <div class="theme-switcher">
+        <button class="theme-btn active" onclick="setTheme('dark')" data-theme-btn="dark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          科技风
+        </button>
+        <button class="theme-btn" onclick="setTheme('light')" data-theme-btn="light">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          简约风
+        </button>
+        <button class="theme-btn" onclick="setTheme('academic')" data-theme-btn="academic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          学术风
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <!-- Left Panel: Dialogue + Summary -->
+    <aside class="left-panel">
+      <!-- Top 1/3: Real-time Dialogue -->
+      <div class="dialogue-section">
+        <div class="section-header">
+          <div class="section-title">
+            <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+            实时对话
+          </div>
+          <span class="section-badge" id="dialogueStatus">等待开启</span>
+        </div>
+        <div class="dialogue-content" id="dialogueContent">
+          <div class="dialogue-placeholder" id="dialoguePlaceholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <p>等待收录会议对话内容...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom 2/3: AI Structured Summary -->
+      <div class="summary-section">
+        <div class="section-header">
+          <div class="section-title">
+            <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            AI 结构化总结
+          </div>
+          <span class="section-badge" id="summaryCount">0 轮更新</span>
+        </div>
+        <div class="summary-content" id="summaryContent">
+          <div class="summary-placeholder" id="summaryPlaceholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            <p>AI 将基于对话内容生成结构化总结<br>每隔数秒自动刷新</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Panel: Keywords + Deep Research -->
+    <main class="right-panel">
+      <div class="keywords-section" id="keywordsSection">
+        <div class="keywords-header">
+          <span class="keywords-title">提取关键词</span>
+          <span class="keywords-count" id="keywordsCount">等待中...</span>
+        </div>
+        <div class="keywords-list" id="keywordsList"></div>
+      </div>
+
+      <div class="research-area" id="researchArea">
+        <div class="research-placeholder" id="researchPlaceholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+          <h3>深度研究</h3>
+          <p>关键词提取后，系统将自动启动深度研究流程</p>
+        </div>
+      </div>
+
+      <div class="bottom-actions" id="bottomActions" style="display:none">
+        <button class="action-btn secondary" onclick="showSaveModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          保存到我的空间
+        </button>
+        <button class="action-btn primary" onclick="showEmailModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          发送到邮箱
+        </button>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <svg class="toast-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+  <span id="toastText"></span>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <h3 id="modalTitle"></h3>
+    <p id="modalDesc"></p>
+    <input class="modal-input" id="modalInput" placeholder="" style="display:none">
+    <div class="modal-actions">
+      <button class="action-btn secondary" onclick="closeModal()">取消</button>
+      <button class="action-btn primary" id="modalConfirm" onclick="confirmModal()">确认</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== STATE =====
+let state = {
+  recording: false,
+  paused: false,
+  startTime: null,
+  elapsed: 0,
+  timerInterval: null,
+  dialogueIndex: 0,
+  summaryVersion: 0,
+  activeKeyword: null,
+  allTimers: [],
+  currentModal: null,
+  currentStreamTimeout: null
+};
+
+// ===== DIALOGUE DATA (Real-time conversation) =====
+const dialogueData = [
+  { speaker: '刘教授', avatar: 'a', text: '今天我们聚焦讨论蛋白质折叠预测的最新进展。AlphaFold3发布以来，大家在实际科研中应用的效果如何？' },
+  { speaker: '赵研究员', avatar: 'b', text: '我们实验室用AF3做了一批膜蛋白的结构预测，整体精度确实很高，但在多结构域蛋白的域间柔性区域预测上还是有偏差，尤其是内在无序区域。' },
+  { speaker: '孙博士', avatar: 'c', text: '对，内在无序蛋白（IDP）是个大问题。这类蛋白没有固定三维结构，但在信号转导和转录调控中起关键作用。传统的"序列→结构→功能"范式在这里失效了。' },
+  { speaker: '周教授', avatar: 'd', text: '我想补充冷冻电镜方面的进展。现在单颗粒分析的分辨率已经突破1.5埃，结合AlphaFold做模型构建，可以解析传统X射线晶体学解不出的大分子复合物。' },
+  { speaker: '刘教授', avatar: 'a', text: '那翻译后修饰呢？磷酸化、泛素化这些动态修饰对蛋白质构象的影响，目前的计算方法能准确预测吗？' },
+  { speaker: '赵研究员', avatar: 'b', text: '这块还比较弱。AlphaFold本质上预测的是静态构象，翻译后修饰引起的构象变化需要分子动力学模拟来补充。我们组最近用增强采样MD跑了一个激酶的磷酸化构象变化，计算成本非常高。' },
+  { speaker: '孙博士', avatar: 'c', text: '说到分子动力学，我想提一下蛋白质-蛋白质相互作用（PPI）的预测。AlphaFold-Multimer虽然能预测复合物结构，但对瞬态相互作用和弱结合的预测还不理想。' },
+  { speaker: '周教授', avatar: 'd', text: '从药物设计角度看，蛋白质构象动态性至关重要。比如GPCR的活化态和失活态之间的构象变化，直接决定了药物的激动或拮抗效果。我们需要的不是一个结构，而是构象系综。' },
+  { speaker: '刘教授', avatar: 'a', text: '最后一个问题——大家怎么看蛋白质设计？David Baker的RFdiffusion和ProteinMPNN这条路线，是否能真正实现从头设计功能蛋白？' },
+  { speaker: '赵研究员', avatar: 'b', text: '我认为蛋白质从头设计在未来3-5年会有大突破。关键是把结构预测和功能预测打通。目前设计出的蛋白质在热稳定性上已经超过天然蛋白，但功能设计——比如酶催化活性——还需要更多工作。' }
+];
+
+// ===== STRUCTURED SUMMARY DATA (Progressively enriched) =====
+const summaryVersions = [
+  {
+    blocks: [
+      {
+        icon: 'topic',
+        title: '核心议题',
+        time: '已讨论 2min',
+        points: [
+          '<span class="summary-highlight">AlphaFold3</span>在实际科研中的应用效果评估',
+          '膜蛋白结构预测精度高，但多结构域柔性区域仍有偏差'
+        ]
+      }
+    ]
+  },
+  {
+    blocks: [
+      {
+        icon: 'topic',
+        title: '核心议题',
+        time: '已讨论 3min',
+        points: [
+          '<span class="summary-highlight">蛋白质折叠预测</span>的技术边界：AF3的能力与局限',
+          '<span class="summary-highlight">内在无序蛋白(IDP)</span>对传统"序列→结构→功能"范式的挑战'
+        ]
+      },
+      {
+        icon: 'breakthrough',
+        title: '技术进展',
+        time: '共识度: 高',
+        points: [
+          '<strong>冷冻电镜</strong>单颗粒分析分辨率突破1.5埃',
+          'Cryo-EM + AlphaFold 联合建模可解析大分子复合物',
+          '传统X射线晶体学无法解决的结构现在可以处理'
+        ]
+      }
+    ]
+  },
+  {
+    blocks: [
+      {
+        icon: 'topic',
+        title: '核心议题',
+        time: '已讨论 5min',
+        points: [
+          '蛋白质<span class="summary-highlight">构象动态性</span>的计算预测方法',
+          '从静态结构到动态构象系综的范式转变'
+        ]
+      },
+      {
+        icon: 'breakthrough',
+        title: '关键技术进展',
+        time: '共识度: 高',
+        points: [
+          '<strong>AlphaFold3</strong>: 静态构象预测精度高，但无法处理动态修饰',
+          '<strong>分子动力学</strong>：增强采样MD可模拟磷酸化构象变化，但计算成本极高',
+          '<strong>AlphaFold-Multimer</strong>：复合物结构可预测，瞬态PPI仍不理想'
+        ]
+      },
+      {
+        icon: 'debate',
+        title: '观点分歧',
+        time: '待深入讨论',
+        points: [
+          '<span class="summary-highlight">翻译后修饰</span>对构象的影响：AI预测 vs MD模拟各有短板',
+          'GPCR药物设计需要构象系综而非单一结构',
+          '蛋白质-蛋白质相互作用(PPI)弱结合预测准确性不足'
+        ]
+      }
+    ]
+  },
+  {
+    blocks: [
+      {
+        icon: 'topic',
+        title: '核心议题',
+        time: '已讨论 7min',
+        points: [
+          '蛋白质<span class="summary-highlight">结构预测</span>与<span class="summary-highlight">从头设计</span>的前沿进展',
+          '计算方法的局限性与多技术融合方向'
+        ]
+      },
+      {
+        icon: 'breakthrough',
+        title: '关键技术进展',
+        time: '5项共识',
+        points: [
+          '<strong>AlphaFold3</strong>: 主链预测精度接近实验水平',
+          '<strong>冷冻电镜</strong>: 1.5埃分辨率 + AI建模联合突破',
+          '<strong>增强采样MD</strong>: 模拟翻译后修饰构象变化',
+          '<strong>RFdiffusion</strong>: 从头蛋白质设计的生成式模型',
+          '<strong>ProteinMPNN</strong>: 反向折叠设计序列'
+        ]
+      },
+      {
+        icon: 'debate',
+        title: '观点分歧',
+        time: '3个争议点',
+        points: [
+          '<span class="summary-highlight">内在无序蛋白</span>能否用现有范式处理',
+          '蛋白质设计的功能实现（酶催化活性）仍是瓶颈',
+          '单一结构 vs 构象系综在药物设计中的适用性'
+        ]
+      },
+      {
+        icon: 'action',
+        title: '关键结论 & 展望',
+        time: '前沿方向',
+        points: [
+          '3-5年内蛋白质从头设计有望实现重大突破',
+          '结构预测与功能预测的打通是核心挑战',
+          '设计蛋白热稳定性已超天然蛋白，功能设计待突破',
+          '多尺度模拟（QM/MM + MD + AI）是未来方向'
+        ]
+      }
+    ]
+  }
+];
+
+// ===== KEYWORDS DATA =====
+const keywordsData = [
+  { text: 'AlphaFold3', status: 'researching' },
+  { text: '内在无序蛋白', status: 'researching' },
+  { text: '冷冻电镜技术', status: 'researching' },
+  { text: '蛋白质从头设计', status: 'pending' },
+  { text: '翻译后修饰', status: 'pending' }
+];
+
+// ===== RESEARCH DATA =====
+const researchData = {
+  'AlphaFold3': {
+    steps: [
+      { title: '制定研究计划', icon: 'plan', status: 'done', thinking: '分析AlphaFold3的核心技术突破：扩散模型架构、多模态预测、精度评估...', content: '研究方向：1) AF3架构创新（Diffusion Module） 2) 预测精度与实验对比 3) 局限性分析 4) 下游应用场景' },
+      { title: '文献检索', icon: 'search', status: 'done', thinking: '搜索Nature、Science及DeepMind官方发布的AF3相关论文与评测...', content: '检索到62篇高相关论文，筛选15篇核心文献', viz: 'citations' },
+      { title: '深度阅读', icon: 'read', status: 'done', thinking: '提取AF3在CASP15竞赛中的GDT-TS评分，与AF2及实验结构对比...', content: 'AF3使用扩散模型替代Structure Module，在蛋白-核酸复合物预测中精度提升40%，蛋白-小分子对接精度超过传统方法。', viz: 'graph' },
+      { title: '知识综合', icon: 'synthesize', status: 'done', thinking: '整合不同结构预测方法的对比...', content: '蛋白质结构预测方法对比：', viz: 'table' },
+      { title: '发展时间线', icon: 'timeline', status: 'done', thinking: '梳理蛋白质结构预测的关键里程碑...', content: '', viz: 'timeline' },
+      { title: '验证与引用', icon: 'verify', status: 'active', thinking: '交叉验证预测精度数据，评估来源可靠性...', content: '来源可靠性：', viz: 'credibility' }
+    ]
+  },
+  '内在无序蛋白': {
+    steps: [
+      { title: '制定研究计划', icon: 'plan', status: 'done', thinking: 'IDP核心问题：构象系综描述、功能机制、实验表征方法...', content: '研究框架：1) IDP定义与分布 2) 功能机制（折叠耦合结合） 3) 实验与计算方法 4) 疾病关联' },
+      { title: '文献检索', icon: 'search', status: 'done', thinking: '聚焦Nature Reviews、PNAS等关于内在无序蛋白的综述和前沿论文...', content: '38篇相关论文，重点关注IDP在神经退行性疾病中的相分离聚集机制', viz: 'citations' },
+      { title: '深度阅读', icon: 'read', status: 'done', thinking: '分析IDP的液-液相分离(LLPS)与淀粉样纤维形成的关系...', content: '约30%人类蛋白质含有长无序区域(>30残基)。IDP通过多价弱相互作用驱动相分离形成无膜细胞器，异常聚集与阿尔茨海默病、帕金森病密切相关。', viz: 'graph' },
+      { title: '知识综合', icon: 'synthesize', status: 'active', thinking: '整合IDP研究方法与功能机制...', content: 'IDP相关疾病与机制：', viz: 'timeline' }
+    ]
+  },
+  '冷冻电镜技术': {
+    steps: [
+      { title: '制定研究计划', icon: 'plan', status: 'done', thinking: '冷冻电镜(Cryo-EM)近年突破：分辨率革命、样品制备、数据处理...', content: '研究方向：1) 单颗粒分析分辨率突破 2) 时间分辨Cryo-EM 3) 原位结构生物学 4) AI辅助数据处理' },
+      { title: '文献检索', icon: 'search', status: 'active', thinking: '搜索冷冻电镜在结构生物学领域的最新技术突破...', content: '正在检索相关文献...', viz: null }
+    ]
+  }
+};
+
+// ===== THEME =====
+function setTheme(theme) {
+  document.body.setAttribute('data-theme', theme);
+  document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.themeBtn === theme));
+}
+
+// ===== TIMER =====
+function startTimer() {
+  state.startTime = Date.now() - state.elapsed;
+  state.timerInterval = setInterval(() => {
+    state.elapsed = Date.now() - state.startTime;
+    const h = String(Math.floor(state.elapsed / 3600000)).padStart(2, '0');
+    const m = String(Math.floor((state.elapsed % 3600000) / 60000)).padStart(2, '0');
+    const s = String(Math.floor((state.elapsed % 60000) / 1000)).padStart(2, '0');
+    document.getElementById('duration').textContent = `${h}:${m}:${s}`;
+  }, 1000);
+}
+function stopTimer() { clearInterval(state.timerInterval); }
+
+// ===== CONTROLS =====
+function startRecording() {
+  state.recording = true;
+  state.paused = false;
+  document.getElementById('btnStart').disabled = true;
+  document.getElementById('btnStart').style.display = 'none';
+  document.getElementById('btnPause').disabled = false;
+  document.getElementById('btnStop').disabled = false;
+  document.getElementById('recordingIndicator').classList.add('active');
+  document.getElementById('dialoguePlaceholder').style.display = 'none';
+  document.getElementById('summaryPlaceholder').style.display = 'none';
+  document.getElementById('dialogueStatus').textContent = '收录中';
+  startTimer();
+  beginDialogueStream();
+  scheduleSummaryUpdates();
+}
+
+function pauseRecording() {
+  state.paused = true;
+  state.recording = false;
+  stopTimer();
+  document.getElementById('btnPause').style.display = 'none';
+  document.getElementById('btnResume').style.display = 'flex';
+  document.getElementById('recordingIndicator').classList.remove('active');
+  document.getElementById('dialogueStatus').textContent = '已暂停';
+  showToast('已暂停收录');
+}
+
+function resumeRecording() {
+  state.paused = false;
+  state.recording = true;
+  startTimer();
+  document.getElementById('btnPause').style.display = 'flex';
+  document.getElementById('btnResume').style.display = 'none';
+  document.getElementById('recordingIndicator').classList.add('active');
+  document.getElementById('dialogueStatus').textContent = '收录中';
+  showToast('继续收录中');
+}
+
+function stopRecording() {
+  state.recording = false;
+  state.paused = false;
+  stopTimer();
+  state.allTimers.forEach(t => clearTimeout(t));
+  if (state.currentStreamTimeout) clearTimeout(state.currentStreamTimeout);
+  document.getElementById('btnPause').style.display = 'flex';
+  document.getElementById('btnPause').disabled = true;
+  document.getElementById('btnResume').style.display = 'none';
+  document.getElementById('btnStop').disabled = true;
+  document.getElementById('recordingIndicator').classList.remove('active');
+  document.getElementById('dialogueStatus').textContent = '已停止';
+  document.getElementById('btnStart').style.display = 'flex';
+  document.getElementById('btnStart').disabled = true;
+  showToast('会议收录已停止');
+}
+
+// ===== DIALOGUE STREAMING =====
+function beginDialogueStream() {
+  let delay = 800;
+  dialogueData.forEach((msg, idx) => {
+    delay += 2000 + Math.random() * 2000;
+    const t = setTimeout(() => {
+      if (!state.recording) return;
+      streamDialogueMessage(msg);
+      // Trigger keywords
+      if (idx === 2) addKeyword(0);
+      if (idx === 3) addKeyword(1);
+      if (idx === 4) addKeyword(2);
+      if (idx === 6) addKeyword(3);
+      if (idx === 7) addKeyword(4);
+    }, delay);
+    state.allTimers.push(t);
+  });
+}
+
+function streamDialogueMessage(msg) {
+  const container = document.getElementById('dialogueContent');
+
+  const div = document.createElement('div');
+  div.className = 'dialogue-msg';
+  div.innerHTML = `
+    <div class="dialogue-avatar speaker-${msg.avatar}">${msg.speaker[0]}</div>
+    <div class="dialogue-body">
+      <div class="dialogue-name">${msg.speaker}</div>
+      <div class="dialogue-text"><span class="text-target"></span><span class="streaming-cursor"></span></div>
+    </div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+
+  // Stream text char by char
+  const textTarget = div.querySelector('.text-target');
+  const cursor = div.querySelector('.streaming-cursor');
+  let charIdx = 0;
+  const chars = msg.text;
+
+  function typeChar() {
+    if (!state.recording || charIdx >= chars.length) {
+      if (cursor) cursor.remove();
+      return;
+    }
+    textTarget.textContent += chars[charIdx];
+    charIdx++;
+    container.scrollTop = container.scrollHeight;
+    const speed = 30 + Math.random() * 40;
+    state.currentStreamTimeout = setTimeout(typeChar, speed);
+  }
+  typeChar();
+}
+
+// ===== SUMMARY UPDATES =====
+function scheduleSummaryUpdates() {
+  const delays = [5000, 12000, 20000, 30000];
+  delays.forEach((delay, idx) => {
+    const t = setTimeout(() => {
+      if (!state.recording && !state.paused) return;
+      updateSummary(idx);
+    }, delay);
+    state.allTimers.push(t);
+  });
+}
+
+function updateSummary(versionIdx) {
+  if (versionIdx >= summaryVersions.length) return;
+  const version = summaryVersions[versionIdx];
+  const container = document.getElementById('summaryContent');
+  state.summaryVersion++;
+
+  document.getElementById('summaryCount').textContent = `第 ${state.summaryVersion} 轮更新`;
+
+  // Clear and rebuild with animation
+  container.innerHTML = '';
+
+  // Add refresh indicator
+  const indicator = document.createElement('div');
+  indicator.className = 'summary-refresh-indicator';
+  indicator.innerHTML = `<span class="dot"></span> AI 总结已更新 · 基于最近对话内容`;
+  container.appendChild(indicator);
+
+  // Render blocks with staggered animation
+  version.blocks.forEach((block, bIdx) => {
+    const blockDiv = document.createElement('div');
+    blockDiv.className = 'summary-block';
+    blockDiv.style.animationDelay = `${bIdx * 0.2}s`;
+
+    const iconSvg = getSummaryIcon(block.icon);
+    const pointsHTML = block.points.map(p => `<div class="summary-point">${p}</div>`).join('');
+
+    blockDiv.innerHTML = `
+      <div class="summary-block-header">
+        <div class="summary-block-icon">${iconSvg}</div>
+        <div class="summary-block-title">${block.title}</div>
+        <div class="summary-block-time">${block.time}</div>
+      </div>
+      <div class="summary-block-body">${pointsHTML}</div>
+    `;
+    container.appendChild(blockDiv);
+  });
+
+  container.scrollTop = 0;
+}
+
+function getSummaryIcon(type) {
+  const icons = {
+    topic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>',
+    breakthrough: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+    debate: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+    action: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
+  };
+  return icons[type] || icons.topic;
+}
+
+// ===== KEYWORDS =====
+function addKeyword(idx) {
+  if (idx >= keywordsData.length) return;
+  const kw = keywordsData[idx];
+  const list = document.getElementById('keywordsList');
+
+  const chip = document.createElement('div');
+  chip.className = 'keyword-chip';
+  chip.dataset.keyword = kw.text;
+  chip.style.animationDelay = `${idx * 0.1}s`;
+  chip.innerHTML = `<span class="status-dot ${kw.status === 'completed' ? 'completed' : ''}"></span>${kw.text}`;
+  chip.onclick = () => selectKeyword(kw.text);
+  list.appendChild(chip);
+
+  document.getElementById('keywordsCount').textContent = `${idx + 1} 个关键词`;
+
+  if (idx === 0) {
+    setTimeout(() => {
+      selectKeyword(kw.text);
+      document.getElementById('bottomActions').style.display = 'flex';
+    }, 600);
+  }
+}
+
+function selectKeyword(keyword) {
+  state.activeKeyword = keyword;
+  document.querySelectorAll('.keyword-chip').forEach(chip => chip.classList.toggle('active', chip.dataset.keyword === keyword));
+  renderResearch(keyword);
+}
+
+// ===== RESEARCH RENDERING =====
+function renderResearch(keyword) {
+  const area = document.getElementById('researchArea');
+  const placeholder = document.getElementById('researchPlaceholder');
+  if (placeholder) placeholder.style.display = 'none';
+
+  const data = researchData[keyword];
+  if (!data) {
+    area.innerHTML = '<div class="research-placeholder"><p>正在初始化深度研究...</p></div>';
+    return;
+  }
+
+  area.innerHTML = '';
+  const stepsContainer = document.createElement('div');
+  stepsContainer.className = 'research-steps';
+  area.appendChild(stepsContainer);
+
+  data.steps.forEach((step, idx) => {
+    const t = setTimeout(() => renderStep(stepsContainer, step, idx), idx * 500);
+    state.allTimers.push(t);
+  });
+}
+
+function renderStep(container, step, idx) {
+  const div = document.createElement('div');
+  div.className = 'research-step';
+  div.style.animationDelay = `${idx * 0.1}s`;
+
+  const iconSvg = getStepIcon(step.icon);
+  const statusClass = step.status === 'done' ? 'done' : step.status === 'active' ? 'active' : '';
+  const statusText = step.status === 'done' ? '已完成' : step.status === 'active' ? '进行中...' : '等待中';
+
+  let vizHTML = '';
+  if (step.viz === 'graph') vizHTML = renderKnowledgeGraph();
+  else if (step.viz === 'citations') vizHTML = renderCitations();
+  else if (step.viz === 'table') vizHTML = renderComparisonTable();
+  else if (step.viz === 'timeline') vizHTML = renderTimeline();
+  else if (step.viz === 'credibility') vizHTML = renderCredibility();
+
+  div.innerHTML = `
+    <div class="step-icon ${statusClass}">${iconSvg}</div>
+    <div class="step-header">
+      <span class="step-title">${step.title}</span>
+      <span class="step-status">${statusText}</span>
+    </div>
+    <div class="step-content">
+      ${step.thinking ? `<div class="step-thinking">${step.thinking}</div>` : ''}
+      <div class="step-output">${step.content}</div>
+      ${vizHTML}
+    </div>
+  `;
+  container.appendChild(div);
+
+  if (step.viz === 'credibility') {
+    setTimeout(() => div.querySelectorAll('.cred-fill').forEach(bar => { bar.style.width = bar.dataset.width; }), 300);
+  }
+  if (step.viz === 'graph') {
+    setTimeout(() => animateGraph(div.querySelector('.knowledge-graph')), 200);
+  }
+
+  document.getElementById('researchArea').scrollTop = document.getElementById('researchArea').scrollHeight;
+}
+
+function getStepIcon(type) {
+  const icons = {
+    plan: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>',
+    search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>',
+    read: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+    synthesize: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
+    verify: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+    timeline: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/></svg>'
+  };
+  return icons[type] || icons.plan;
+}
+
+function renderKnowledgeGraph() {
+  const nodes = [
+    { id: 'center', label: 'AlphaFold3', x: 240, y: 130, r: 26, primary: true },
+    { id: 'n1', label: '扩散模型', x: 110, y: 60, r: 18 },
+    { id: 'n2', label: '蛋白质折叠', x: 380, y: 70, r: 18 },
+    { id: 'n3', label: 'CASP15', x: 370, y: 190, r: 18 },
+    { id: 'n4', label: 'MSA特征', x: 90, y: 180, r: 16 },
+    { id: 'n5', label: '复合物预测', x: 195, y: 235, r: 15 },
+    { id: 'n6', label: '小分子对接', x: 310, y: 240, r: 15 },
+    { id: 'n7', label: 'RoseTTAFold', x: 435, y: 130, r: 14 },
+    { id: 'n8', label: 'Evoformer', x: 55, y: 125, r: 14 }
+  ];
+  const links = [
+    { source: 'center', target: 'n1' }, { source: 'center', target: 'n2' },
+    { source: 'center', target: 'n3' }, { source: 'center', target: 'n4' },
+    { source: 'n1', target: 'n5' }, { source: 'n1', target: 'n6' },
+    { source: 'n2', target: 'n3' }, { source: 'n2', target: 'n7' },
+    { source: 'n3', target: 'n6' }, { source: 'n4', target: 'n8' },
+    { source: 'center', target: 'n8' }, { source: 'n5', target: 'n6' }
+  ];
+
+  let linksHTML = links.map(l => {
+    const s = nodes.find(n => n.id === l.source);
+    const t = nodes.find(n => n.id === l.target);
+    return `<line class="link" x1="${s.x}" y1="${s.y}" x2="${t.x}" y2="${t.y}" opacity="0"/>`;
+  }).join('');
+
+  let nodesHTML = nodes.map(n => `
+    <g class="node" transform="translate(${n.x},${n.y})" opacity="0">
+      <circle r="${n.r}" fill="${n.primary ? 'var(--accent-primary)' : 'var(--keyword-bg)'}" stroke="${n.primary ? 'var(--accent-secondary)' : 'var(--keyword-border)'}" stroke-width="${n.primary ? 3 : 1.5}"/>
+      <text dy="0.35em" fill="${n.primary ? 'var(--btn-primary-text)' : 'var(--text-primary)'}" font-size="${n.primary ? 10 : 8}" font-weight="${n.primary ? 700 : 400}">${n.label}</text>
+    </g>
+  `).join('');
+
+  return `<div class="viz-container"><svg class="knowledge-graph" viewBox="0 0 490 280">${linksHTML}${nodesHTML}</svg></div>`;
+}
+
+function animateGraph(svg) {
+  if (!svg) return;
+  svg.querySelectorAll('.link').forEach((link, i) => {
+    setTimeout(() => { link.style.transition = 'opacity 0.4s'; link.setAttribute('opacity', '1'); }, i * 70);
+  });
+  svg.querySelectorAll('.node').forEach((node, i) => {
+    setTimeout(() => { node.style.transition = 'opacity 0.5s'; node.setAttribute('opacity', '1'); }, i * 100 + 150);
+  });
+}
+
+function renderCitations() {
+  return `<div class="citations-grid">
+    <div class="citation-card"><div class="citation-source">Nature · 2024</div><div class="citation-title">Accurate structure prediction of biomolecular interactions with AlphaFold 3</div><div class="citation-meta">DeepMind · 被引1,247</div></div>
+    <div class="citation-card"><div class="citation-source">Science · 2023</div><div class="citation-title">De novo design of protein structure and function with RFdiffusion</div><div class="citation-meta">Baker Lab · 被引892</div></div>
+    <div class="citation-card"><div class="citation-source">Nature Methods · 2024</div><div class="citation-title">OpenFold: Retraining AlphaFold2 yields new insights into its learning mechanisms</div><div class="citation-meta">Columbia Univ · 被引356</div></div>
+    <div class="citation-card"><div class="citation-source">Cell · 2023</div><div class="citation-title">Computed structures of core eukaryotic protein complexes</div><div class="citation-meta">EMBL-EBI · 被引521</div></div>
+  </div>`;
+}
+
+function renderComparisonTable() {
+  return `<table class="comparison-table"><thead><tr><th>预测方法</th><th>适用目标</th><th>精度(GDT-TS)</th><th>主要局限</th><th>代表工具</th></tr></thead><tbody>
+    <tr><td><strong>AlphaFold3</strong></td><td>单体/复合物</td><td>>90</td><td>无序区域、动态构象</td><td>DeepMind</td></tr>
+    <tr><td><strong>RoseTTAFold</strong></td><td>单体/RNA</td><td>~85</td><td>大分子复合物</td><td>Baker Lab</td></tr>
+    <tr><td><strong>ESMFold</strong></td><td>单体(快速)</td><td>~80</td><td>无MSA依赖但精度略低</td><td>Meta AI</td></tr>
+    <tr><td><strong>分子动力学</strong></td><td>构象动态</td><td>N/A</td><td>计算成本极高、时间尺度</td><td>GROMACS/AMBER</td></tr>
+  </tbody></table>`;
+}
+
+function renderTimeline() {
+  return `<div class="timeline-viz">
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-info"><div class="timeline-year">1958</div><div class="timeline-desc">Kendrew 首次解析肌红蛋白三维结构（X射线晶体学）</div></div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-info"><div class="timeline-year">1972</div><div class="timeline-desc">Anfinsen 提出蛋白质折叠热力学假说（诺贝尔奖）</div></div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-info"><div class="timeline-year">1994</div><div class="timeline-desc">CASP竞赛启动，系统评估结构预测方法</div></div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-info"><div class="timeline-year">2017</div><div class="timeline-desc">冷冻电镜"分辨率革命"获诺贝尔化学奖</div></div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-info"><div class="timeline-year">2020</div><div class="timeline-desc"><strong>AlphaFold2 在CASP14中达到实验级精度</strong>（GDT>90）</div></div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-info"><div class="timeline-year">2024</div><div class="timeline-desc"><strong>AlphaFold3</strong>：扩散模型架构，蛋白-核酸-小分子统一预测</div></div></div>
+    <div class="timeline-item"><div class="timeline-dot" style="background:var(--accent-tertiary)"></div><div class="timeline-info"><div class="timeline-year">~2027</div><div class="timeline-desc">预计实现动态构象系综的高精度AI预测</div></div></div>
+  </div>`;
+}
+
+function renderCredibility() {
+  return `<div class="credibility-bars">
+    <div class="cred-item"><span class="cred-label">Nature / Science</span><div class="cred-bar"><div class="cred-fill high" style="width:0" data-width="97%"></div></div><span class="cred-value">97%</span></div>
+    <div class="cred-item"><span class="cred-label">Cell / Mol Cell</span><div class="cred-bar"><div class="cred-fill high" style="width:0" data-width="94%"></div></div><span class="cred-value">94%</span></div>
+    <div class="cred-item"><span class="cred-label">PDB 实验数据</span><div class="cred-bar"><div class="cred-fill high" style="width:0" data-width="99%"></div></div><span class="cred-value">99%</span></div>
+    <div class="cred-item"><span class="cred-label">bioRxiv 预印本</span><div class="cred-bar"><div class="cred-fill medium" style="width:0" data-width="65%"></div></div><span class="cred-value">65%</span></div>
+    <div class="cred-item"><span class="cred-label">科技新闻报道</span><div class="cred-bar"><div class="cred-fill low" style="width:0" data-width="42%"></div></div><span class="cred-value">42%</span></div>
+  </div>`;
+}
+
+// ===== TOAST & MODAL =====
+function showToast(text) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastText').textContent = text;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function showSaveModal() {
+  state.currentModal = 'save';
+  document.getElementById('modalTitle').textContent = '保存到我的空间';
+  document.getElementById('modalDesc').textContent = '将"' + (state.activeKeyword || '量子纠错') + '"的深度研究结果保存到个人知识空间。';
+  document.getElementById('modalInput').style.display = 'none';
+  document.getElementById('modalConfirm').textContent = '确认保存';
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function showEmailModal() {
+  state.currentModal = 'email';
+  document.getElementById('modalTitle').textContent = '发送到邮箱';
+  document.getElementById('modalDesc').textContent = '将深度研究报告以PDF格式发送到您的邮箱。';
+  const input = document.getElementById('modalInput');
+  input.style.display = 'block';
+  input.placeholder = '请输入邮箱地址';
+  input.value = '';
+  document.getElementById('modalConfirm').textContent = '发送';
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function closeModal(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+function confirmModal() {
+  closeModal();
+  showToast(state.currentModal === 'save' ? '已保存到我的空间' : '报告已发送到邮箱');
+}
+</script>
+</body>
+</html>
