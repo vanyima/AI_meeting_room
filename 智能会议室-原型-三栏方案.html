@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="tech">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智能会议室 - 三栏方案</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,300;400;500;600&family=Outfit:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--transition-speed:0.3s}
+[data-theme="tech"]{--bg-primary:#0a0e1a;--bg-secondary:#111827;--bg-tertiary:#0d1220;--bg-card:rgba(17,24,39,0.8);--bg-card-hover:rgba(30,41,59,0.9);--border-color:rgba(56,189,248,0.15);--border-glow:rgba(56,189,248,0.4);--text-primary:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#64748b;--accent-1:#38bdf8;--accent-2:#818cf8;--accent-3:#a78bfa;--accent-4:#34d399;--accent-5:#fb923c;--accent-danger:#f87171;--chip-bg:rgba(56,189,248,0.1);--chip-active:rgba(56,189,248,0.25);--step-line:rgba(56,189,248,0.2);--step-complete:#34d399;--step-active:#38bdf8;--step-pending:#64748b;--font-display:'Space Grotesk',sans-serif;--font-body:'Noto Sans SC',sans-serif;--font-mono:'JetBrains Mono',monospace;--shadow:0 4px 24px rgba(0,0,0,0.4);--glow:0 0 20px rgba(56,189,248,0.15);--agent-explore:#38bdf8;--agent-critic:#f87171;--agent-practice:#34d399;--agent-compliance:#fb923c;--agent-creative:#a78bfa;--agent-summary:#818cf8;--ref-bg:rgba(56,189,248,0.08);--ref-bg-hover:rgba(56,189,248,0.14);--modal-bg:rgba(0,0,0,0.6)}
+[data-theme="light"]{--bg-primary:#f8fafc;--bg-secondary:#ffffff;--bg-tertiary:#f1f5f9;--bg-card:rgba(255,255,255,0.9);--bg-card-hover:rgba(241,245,249,1);--border-color:rgba(99,102,241,0.12);--border-glow:rgba(99,102,241,0.3);--text-primary:#1e293b;--text-secondary:#475569;--text-muted:#94a3b8;--accent-1:#6366f1;--accent-2:#8b5cf6;--accent-3:#a855f7;--accent-4:#10b981;--accent-5:#f59e0b;--accent-danger:#ef4444;--chip-bg:rgba(99,102,241,0.08);--chip-active:rgba(99,102,241,0.15);--step-line:rgba(99,102,241,0.15);--step-complete:#10b981;--step-active:#6366f1;--step-pending:#cbd5e1;--font-display:'Outfit',sans-serif;--font-body:'Noto Sans SC',sans-serif;--font-mono:'JetBrains Mono',monospace;--shadow:0 4px 24px rgba(0,0,0,0.06);--glow:none;--agent-explore:#6366f1;--agent-critic:#ef4444;--agent-practice:#10b981;--agent-compliance:#f59e0b;--agent-creative:#a855f7;--agent-summary:#8b5cf6;--ref-bg:rgba(99,102,241,0.06);--ref-bg-hover:rgba(99,102,241,0.12);--modal-bg:rgba(0,0,0,0.4)}
+[data-theme="academic"]{--bg-primary:#faf9f7;--bg-secondary:#f5f3ef;--bg-tertiary:#edeae4;--bg-card:rgba(250,249,247,0.95);--bg-card-hover:rgba(245,243,239,1);--border-color:rgba(28,25,23,0.1);--border-glow:rgba(146,64,14,0.25);--text-primary:#1c1917;--text-secondary:#57534e;--text-muted:#78716c;--accent-1:#92400e;--accent-2:#78350f;--accent-3:#a16207;--accent-4:#4d7c0f;--accent-5:#9a3412;--accent-danger:#dc2626;--chip-bg:rgba(28,25,23,0.05);--chip-active:rgba(146,64,14,0.12);--step-line:rgba(28,25,23,0.1);--step-complete:#4d7c0f;--step-active:#92400e;--step-pending:#d6d3d1;--font-display:'Fraunces','Playfair Display','Noto Serif SC',serif;--font-body:'Source Serif 4','Noto Serif SC',Georgia,serif;--font-mono:'IBM Plex Mono','JetBrains Mono',monospace;--shadow:0 1px 6px rgba(28,25,23,0.06);--glow:none;--agent-explore:#92400e;--agent-critic:#9a3412;--agent-practice:#4d7c0f;--agent-compliance:#78350f;--agent-creative:#a16207;--agent-summary:#475569;--ref-bg:rgba(28,25,23,0.04);--ref-bg-hover:rgba(146,64,14,0.08);--modal-bg:rgba(28,25,23,0.5)}
+
+/* Academic theme enhancements - ink screen texture */
+[data-theme="academic"] .app{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23faf9f7'/%3E%3Crect width='1' height='1' fill='%23f5f3ef' opacity='0.4'/%3E%3C/svg%3E")}
+[data-theme="academic"] .section-header{letter-spacing:0.1em;font-family:'Source Sans 3','Noto Sans SC',sans-serif}
+[data-theme="academic"] .host-bar{border-top-width:3px;background:var(--bg-tertiary);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23edeae4'/%3E%3Crect width='1' height='1' fill='%23e8e4dd' opacity='0.5'/%3E%3C/svg%3E")}
+[data-theme="academic"] .host-log-entry{font-family:'IBM Plex Mono','JetBrains Mono',monospace;font-size:10px}
+[data-theme="academic"] .agent-name{font-family:'Fraunces','Playfair Display',serif}
+[data-theme="academic"] .citation-card{border-left:3px solid var(--accent-1)}
+[data-theme="academic"] .step-title{font-family:'Fraunces','Playfair Display',serif;font-weight:500}
+
+html,body{height:100%;font-family:var(--font-body);background:var(--bg-primary);color:var(--text-primary);overflow:hidden;transition:background var(--transition-speed),color var(--transition-speed)}
+.app{display:flex;flex-direction:column;height:100vh}
+.report-view{display:none;height:100vh;flex-direction:column;overflow:hidden}
+.report-view.active{display:flex}
+.app.hidden{display:none}
+
+/* TOPBAR */
+.topbar{height:56px;display:flex;align-items:center;padding:0 20px;background:var(--bg-secondary);border-bottom:1px solid var(--border-color);flex-shrink:0;gap:12px}
+.topbar-left{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--accent-1)}
+.meeting-title{font-size:13px;color:var(--text-secondary)}
+.topbar-sep{color:var(--text-muted);font-size:13px;opacity:0.5;user-select:none}
+.meeting-duration{font-family:var(--font-mono);font-size:12px;color:var(--text-muted)}
+.rec-badge{display:none;align-items:center;gap:4px;font-size:11px;font-weight:500;color:var(--accent-danger);padding:2px 8px;border-radius:4px;background:rgba(248,113,113,0.1)}
+.rec-badge.active{display:flex}
+.rec-dot{width:6px;height:6px;border-radius:50%;background:var(--accent-danger);animation:pulseDot 1.5s infinite}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:0.3}}
+.topbar-center{flex:1;display:flex;align-items:center;justify-content:center;gap:10px}
+.topbar-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.btn{padding:7px 16px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-primary);transition:all 0.2s;font-family:var(--font-body)}
+.btn:hover{background:var(--bg-card-hover);border-color:var(--border-glow)}
+.btn-primary{background:var(--accent-1);color:white;border-color:var(--accent-1);font-weight:600}
+.btn-primary:hover{opacity:0.9}
+.btn-danger{color:var(--accent-danger);border-color:rgba(248,113,113,0.3)}
+.btn:disabled{opacity:0.4;cursor:not-allowed}
+.btn-lg{padding:9px 28px;font-size:14px;border-radius:8px}
+.btn-action{padding:8px 18px;font-size:13px;font-weight:600;border-radius:8px;display:flex;align-items:center;gap:6px;cursor:pointer;transition:all 0.2s;border:none}
+.btn-action svg{width:14px;height:14px}
+.btn-action.save{background:var(--accent-1);color:white}
+.btn-action.save:hover{opacity:0.9;transform:translateY(-1px)}
+.btn-action.report{background:var(--accent-1);color:white}
+.btn-action.report:hover{opacity:0.9;transform:translateY(-1px)}
+.btn-action.history{background:transparent;color:var(--text-secondary);border:1.5px solid var(--border-color)}
+.btn-action.history:hover{border-color:var(--accent-1);color:var(--accent-1)}
+.btn-action.email{background:transparent;color:var(--accent-1);border:1.5px solid var(--accent-1)}
+.btn-action.email:hover{background:var(--chip-bg)}
+.btn-action:disabled{opacity:0.35;cursor:not-allowed;transform:none}
+.btn-link{padding:6px 14px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);border-radius:6px;display:flex;align-items:center;gap:5px;transition:all 0.2s}
+.btn-link:hover{border-color:var(--border-glow);color:var(--text-primary)}
+.btn-link svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.5}
+.theme-switcher{display:flex;gap:4px;padding:3px;background:var(--bg-primary);border-radius:6px}
+.theme-btn{width:22px;height:22px;border-radius:4px;border:2px solid transparent;cursor:pointer;transition:all 0.2s}
+.theme-btn.active{border-color:var(--accent-1);transform:scale(1.1)}
+.theme-btn[data-t="tech"]{background:linear-gradient(135deg,#0a0e1a,#1e293b)}
+.theme-btn[data-t="light"]{background:linear-gradient(135deg,#f8fafc,#e2e8f0)}
+.theme-btn[data-t="academic"]{background:linear-gradient(135deg,#faf9f7,#edeae4)}
+.speed-switcher{display:none;gap:0;border-radius:6px;overflow:hidden;border:1px solid var(--border-color)}
+.speed-btn{padding:4px 10px;font-size:11px;cursor:pointer;background:var(--bg-card);color:var(--text-muted);border:none;font-family:var(--font-body);transition:all 0.2s}
+.speed-btn.active{background:var(--accent-1);color:white}
+
+/* HOST BAR (小D控场栏) */
+.host-bar{display:none!important}
+.host-bar.active{display:none!important}
+.host-avatar{width:56px;height:56px;border-radius:50%;position:relative;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;border:2px solid var(--border-color)}
+.host-avatar video{width:80px;height:80px;object-fit:cover;object-position:center top;pointer-events:none}
+.host-avatar::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:2px solid var(--accent-1);opacity:0;animation:hostRing 3s ease-in-out infinite}
+@keyframes hostRing{0%,100%{opacity:0;transform:scale(0.95)}50%{opacity:0.4;transform:scale(1.08)}}
+.host-info{display:flex;flex-direction:column;gap:3px;min-width:90px;flex-shrink:0}
+.host-name{font-size:15px;font-weight:600;color:var(--text-primary);font-family:var(--font-display);display:flex;align-items:center;gap:6px}
+.host-name .host-tag{font-size:9px;font-weight:500;padding:2px 6px;border-radius:4px;background:var(--accent-1);color:white;letter-spacing:0.5px}
+.host-status{font-size:12px;color:var(--accent-1);font-weight:500;transition:all 0.3s}
+.host-log{flex:1;display:flex;align-items:center;gap:8px;overflow-x:auto;padding:4px 0;max-height:56px}
+.host-log-entry{font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:5px;animation:fadeInUp 0.3s ease;line-height:1.4;white-space:nowrap;padding:4px 12px;background:var(--bg-secondary);border-radius:14px;border:1px solid var(--border-color);flex-shrink:0}
+.host-log-entry:first-child{border-color:var(--accent-1);background:color-mix(in srgb,var(--accent-1) 8%,var(--bg-primary))}
+.host-log-entry .log-time{font-family:var(--font-mono);color:var(--accent-1);opacity:0.7;font-size:9px}
+.host-log-entry .log-text{color:var(--text-secondary);font-size:11px}
+.host-speech{position:absolute;left:70px;top:56px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:12px;padding:10px 16px;font-size:12px;color:var(--text-primary);box-shadow:0 4px 16px rgba(0,0,0,0.1);max-width:420px;line-height:1.6;animation:speechIn 0.4s cubic-bezier(0.34,1.56,0.64,1);z-index:100;pointer-events:none}
+.host-speech::before{content:'';position:absolute;top:-6px;left:18px;width:12px;height:12px;background:var(--bg-primary);border-left:1px solid var(--border-color);border-top:1px solid var(--border-color);transform:rotate(45deg)}
+.host-speech.fade-out{animation:speechOut 0.5s ease forwards}
+@keyframes speechIn{0%{opacity:0;transform:translateY(6px) scale(0.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes speechOut{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-4px)}}
+.host-avatar.speaking{border-color:var(--accent-1)}
+
+/* MAIN */
+.main{flex:1;display:grid;grid-template-columns:35fr 30fr 35fr;overflow:hidden}
+.left-panel{display:flex;flex-direction:column;border-right:1px solid var(--border-color);overflow:hidden}
+.dialogue-section{height:100%;display:flex;flex-direction:column}
+.summary-section{height:62%;display:none;flex-direction:column}
+.section-header{padding:10px 16px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);border-bottom:1px solid var(--border-color);background:var(--bg-secondary);flex-shrink:0;display:flex;align-items:center;gap:8px}
+.section-header-icon svg{width:14px;height:14px;stroke:var(--accent-1);fill:none;stroke-width:1.5}
+.section-badge{font-size:10px;padding:2px 7px;border-radius:8px;background:var(--chip-bg);color:var(--accent-1);font-weight:500;margin-left:auto}
+
+.dialogue-list{flex:1;overflow-y:auto;padding:10px 14px;position:relative}
+.dialogue-item{display:flex;gap:8px;margin-bottom:10px;animation:fadeInUp 0.3s ease;padding:4px 6px;border-radius:6px;border-left:2px solid transparent;transition:all 0.4s}
+.dialogue-item.highlighted{border-left-color:var(--accent-1);background:rgba(56,189,248,0.1);box-shadow:0 0 0 2px rgba(56,189,248,0.15)}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.speaker-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:white;flex-shrink:0}
+.dialogue-content{flex:1}
+.speaker-name{font-size:12px;font-weight:500;color:var(--text-muted);margin-bottom:2px}
+.dialogue-text{font-size:14px;line-height:1.55;color:var(--text-primary)}
+.dialogue-text .trigger-kw{color:var(--accent-1);font-weight:600;background:var(--chip-bg);padding:1px 5px;border-radius:3px}
+.typing-cursor{display:inline-block;width:2px;height:15px;background:var(--accent-1);animation:blink 0.8s infinite;vertical-align:middle;margin-left:1px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.dialogue-item.assistant{background:color-mix(in srgb,var(--accent-1) 6%,var(--bg-primary));border-left-color:var(--accent-1);border-radius:8px;padding:10px 12px}
+.assistant-avatar{width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--accent-1);position:relative}
+.assistant-avatar video{width:48px;height:48px;object-fit:cover;object-position:center top;pointer-events:none;position:absolute;top:-4px;left:-8px}
+.assistant-avatar::after{content:'';position:absolute;inset:-2px;border-radius:50%;border:2px solid var(--accent-1);opacity:0;animation:assistantRing 3s ease-in-out infinite}
+@keyframes assistantRing{0%,100%{opacity:0;transform:scale(1)}50%{opacity:0.6;transform:scale(1.15)}}
+.assistant-name{font-size:12px;font-weight:600;color:var(--accent-1)}
+
+/* Reference Cards */
+.ref-card{display:flex;align-items:center;gap:8px;padding:8px 12px;margin:6px 0 2px;border-radius:6px;border-left:4px solid var(--accent-1);background:var(--ref-bg);cursor:pointer;font-size:13px;transition:all 0.2s;max-width:100%}
+.ref-card:hover{background:var(--ref-bg-hover);transform:translateX(2px)}
+.ref-card.ref-agent{border-left-color:var(--accent-3)}
+.ref-card.ref-research{border-left-color:var(--accent-4)}
+.ref-card .ref-avatar{width:20px;height:20px;border-radius:50%;flex-shrink:0;object-fit:cover}
+.ref-card .ref-name{font-weight:600;color:var(--text-primary);white-space:nowrap;font-size:12px}
+.ref-card .ref-text{color:var(--text-secondary);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+.ref-card .ref-tag{font-size:10px;padding:1px 6px;border-radius:3px;background:var(--chip-bg);color:var(--accent-1);white-space:nowrap}
+
+/* Summary */
+.summary-content{flex:1;overflow-y:auto;padding:12px 14px;position:relative}
+.summary-block{margin-bottom:14px;animation:fadeInUp 0.4s ease}
+.summary-block-header{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.sb-icon{width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-icon svg{width:12px;height:12px;stroke:white;fill:none;stroke-width:2}
+.summary-block-title{font-size:14px;font-weight:600;color:var(--text-primary)}
+.summary-block-tag{font-size:10px;padding:1px 6px;border-radius:3px;background:var(--chip-bg);color:var(--accent-1);margin-left:auto}
+.summary-points{padding-left:26px}
+.summary-point{font-size:13px;line-height:1.6;color:var(--text-secondary);margin-bottom:4px;position:relative}
+.summary-point::before{content:'';position:absolute;left:-12px;top:9px;width:4px;height:4px;border-radius:50%;background:var(--text-muted)}
+.summary-point .kw-hl{color:var(--accent-1);font-weight:500;background:var(--chip-bg);padding:0 3px;border-radius:2px}
+
+/* CENTER */
+.center-panel{display:flex;flex-direction:column;border-right:1px solid var(--border-color);overflow:hidden;background:var(--bg-tertiary)}
+.keywords-bar{padding:12px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border-color);background:var(--bg-secondary);flex-shrink:0;flex-wrap:wrap;min-height:50px}
+.keywords-bar-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-right:4px}
+.keyword-chip{display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:16px;font-size:13px;font-weight:500;background:var(--chip-bg);color:var(--text-secondary);cursor:pointer;border:1px solid transparent;transition:all 0.2s;animation:fadeInUp 0.4s ease}
+.keyword-chip:hover{background:var(--chip-active);color:var(--text-primary)}
+.keyword-chip.active{background:var(--chip-active);border-color:var(--accent-1);color:var(--accent-1)}
+.keyword-status{width:7px;height:7px;border-radius:50%;background:var(--text-muted)}
+.keyword-status.researching{background:var(--accent-4);animation:pulseDot 1.2s infinite}
+.keyword-status.completed{background:var(--step-complete)}
+
+.research-area{flex:1;overflow-y:auto;padding:18px 20px;position:relative}
+.research-kw-group{display:none}
+.research-kw-group.visible{display:block}
+.step-timeline{position:relative;padding-left:28px}
+.step-timeline::before{content:'';position:absolute;left:9px;top:14px;bottom:14px;width:2px;background:var(--step-line)}
+.step-item{position:relative;margin-bottom:20px;animation:stepSlideIn 0.5s ease both}
+@keyframes stepSlideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+.step-dot{position:absolute;left:-28px;top:6px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;z-index:1}
+.step-dot.completed{background:var(--step-complete)}
+.step-dot.active{background:var(--step-active);animation:stepPulse 2s infinite}
+.step-dot.pending{background:var(--step-pending)}
+@keyframes stepPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,0.4)}50%{box-shadow:0 0 0 6px rgba(56,189,248,0)}}
+.step-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.step-title{font-size:14px;font-weight:600;color:var(--text-primary)}
+.step-status{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500}
+.step-status.completed{background:rgba(52,211,153,0.1);color:var(--step-complete)}
+.step-status.active{background:rgba(56,189,248,0.1);color:var(--step-active)}
+.step-thinking{font-size:12px;font-style:italic;color:var(--text-muted);margin-bottom:8px;padding-left:8px;border-left:2px solid var(--border-color)}
+.step-content{background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;padding:14px;box-shadow:var(--shadow)}
+.citation-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.citation-card{padding:9px 11px;border-radius:6px;background:var(--bg-primary);border:1px solid var(--border-color);transition:border-color 0.2s}
+.citation-card:hover{border-color:var(--border-glow)}
+.citation-journal{font-size:11px;font-weight:600;color:var(--accent-1);margin-bottom:3px}
+.citation-title{font-size:12px;font-weight:500;color:var(--text-primary);line-height:1.4;margin-bottom:3px}
+.citation-meta{font-size:11px;color:var(--text-muted);display:flex;gap:8px}
+.knowledge-graph{width:100%;height:180px}
+.knowledge-graph svg{width:100%;height:100%}
+.kg-node{cursor:pointer}
+.kg-link{stroke:var(--border-glow);stroke-width:1.5;opacity:0.6}
+.comparison-table{width:100%;border-collapse:collapse;font-size:12px}
+.comparison-table th{background:var(--bg-primary);padding:7px 9px;text-align:left;font-weight:600;color:var(--text-primary);border-bottom:1px solid var(--border-color)}
+.comparison-table td{padding:6px 9px;border-bottom:1px solid var(--border-color);color:var(--text-secondary)}
+.full-timeline{position:relative;padding-left:14px}
+.full-timeline::before{content:'';position:absolute;left:3px;top:4px;bottom:4px;width:2px;background:var(--step-line)}
+.timeline-node{position:relative;margin-bottom:10px;padding-left:12px}
+.timeline-node::before{content:'';position:absolute;left:-4px;top:5px;width:7px;height:7px;border-radius:50%;background:var(--accent-1)}
+.timeline-node.milestone::before{width:9px;height:9px;left:-5px;background:var(--accent-5)}
+.timeline-node.future::before{background:var(--accent-2)}
+.timeline-year{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--accent-1)}
+.timeline-event{font-size:12px;color:var(--text-secondary);line-height:1.4}
+.credibility-chart{display:flex;flex-direction:column;gap:7px}
+.cred-row{display:flex;align-items:center;gap:8px}
+.cred-label{font-size:11px;color:var(--text-secondary);min-width:85px;text-align:right}
+.cred-bar-bg{flex:1;height:18px;background:var(--bg-primary);border-radius:3px;overflow:hidden}
+.cred-bar{height:100%;border-radius:3px;transition:width 1.5s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:5px}
+.cred-bar.high{background:linear-gradient(90deg,var(--accent-4),rgba(52,211,153,0.7))}
+.cred-bar.medium{background:linear-gradient(90deg,var(--accent-5),rgba(251,146,60,0.7))}
+.cred-value{font-size:9px;font-weight:600;color:white}
+.plan-directions{display:flex;flex-direction:column;gap:5px}
+.plan-direction{display:flex;align-items:center;gap:7px;padding:6px 9px;border-radius:5px;background:var(--bg-primary);font-size:12px;color:var(--text-secondary)}
+.plan-num{width:18px;height:18px;border-radius:50%;background:var(--accent-1);color:white;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0}
+
+/* RIGHT PANEL */
+.right-panel{display:flex;flex-direction:column;overflow:hidden}
+.agent-header{padding:10px 16px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);border-bottom:1px solid var(--border-color);background:var(--bg-secondary);flex-shrink:0;display:flex;align-items:center;gap:8px}
+.agent-header-icon svg{width:14px;height:14px;stroke:var(--accent-2);fill:none;stroke-width:1.5}
+.agent-mode-label{font-size:10px;padding:2px 8px;border-radius:4px;background:var(--chip-bg);color:var(--accent-2);font-weight:500;text-transform:none;letter-spacing:0}
+.agent-status-text{font-size:10px;font-weight:400;color:var(--text-muted);margin-left:auto}
+.agent-chat-list{flex:1;overflow-y:auto;padding:12px 14px;position:relative}
+.agent-discussion-group{display:none}
+.agent-discussion-group.visible{display:block}
+.agent-wave-divider{display:flex;align-items:center;gap:8px;margin:16px 0 12px;animation:fadeInUp 0.4s ease}
+.wave-divider-line{flex:1;height:1px;background:var(--border-color)}
+.wave-divider-text{font-size:10px;color:var(--accent-1);font-weight:500;white-space:nowrap;padding:2px 8px;background:color-mix(in srgb,var(--accent-1) 8%,var(--bg-primary));border-radius:8px;border:1px solid color-mix(in srgb,var(--accent-1) 20%,transparent)}
+
+.agent-msg{display:flex;gap:8px;margin-bottom:14px;animation:agentIn 0.4s ease;padding:3px;border-radius:8px;transition:all 0.3s}
+.agent-msg.highlighted{background:rgba(167,139,250,0.1);box-shadow:0 0 0 2px rgba(167,139,250,0.2)}
+@keyframes agentIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+.agent-avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;overflow:hidden;transition:transform 0.3s}
+.agent-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.agent-avatar.speaking{animation:speakPulse 0.8s ease infinite}
+@keyframes speakPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.agent-bubble{flex:1}
+.agent-name{font-size:12px;font-weight:600;margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.agent-role{font-size:10px;font-weight:400;color:var(--text-muted)}
+.agent-text{font-size:13px;line-height:1.65;color:var(--text-secondary);padding:10px 13px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:2px 10px 10px 10px;min-height:20px;transition:all 0.3s}
+.agent-text .em{color:var(--text-primary);font-weight:500}
+.agent-text.summary-style{border:2px solid var(--accent-2);background:rgba(129,140,248,0.05)}
+.agent-thinking-text{font-style:italic;color:var(--text-muted);font-size:12px;display:flex;align-items:center;gap:6px}
+.thinking-dots{display:inline-flex;gap:3px}
+.thinking-dots span{width:4px;height:4px;border-radius:50%;background:var(--text-muted);animation:thinkDot 1.4s infinite}
+.thinking-dots span:nth-child(2){animation-delay:0.2s}
+.thinking-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes thinkDot{0%,100%{opacity:0.2;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
+
+/* EMPTY STATES */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:20px}
+.empty-state-label{font-size:13px;color:var(--text-muted);margin-top:16px;text-align:center;line-height:1.7}
+.wave-container{display:flex;align-items:center;gap:3px;height:40px}
+.wave-bar{width:3px;border-radius:2px;background:var(--accent-1);opacity:0.3;animation:waveAnim 1.8s ease-in-out infinite}
+.wave-bar:nth-child(1){height:12px;animation-delay:0s}.wave-bar:nth-child(2){height:20px;animation-delay:0.15s}.wave-bar:nth-child(3){height:28px;animation-delay:0.3s}.wave-bar:nth-child(4){height:36px;animation-delay:0.45s}.wave-bar:nth-child(5){height:28px;animation-delay:0.6s}.wave-bar:nth-child(6){height:20px;animation-delay:0.75s}.wave-bar:nth-child(7){height:12px;animation-delay:0.9s}
+@keyframes waveAnim{0%,100%{transform:scaleY(0.4);opacity:0.2}50%{transform:scaleY(1);opacity:0.5}}
+.skeleton-container{display:flex;flex-direction:column;gap:8px;width:120px}
+.skel-line{height:4px;border-radius:2px;background:var(--accent-2);opacity:0.2;animation:skelPulse 2.5s ease-in-out infinite}
+.skel-line:nth-child(1){width:60%;animation-delay:0s}.skel-line:nth-child(2){width:90%;animation-delay:0.4s}.skel-line:nth-child(3){width:45%;animation-delay:0.8s}.skel-line:nth-child(4){width:75%;animation-delay:1.2s}
+@keyframes skelPulse{0%,100%{opacity:0.15;transform:scaleX(0.9)}50%{opacity:0.4;transform:scaleX(1)}}
+.nodes-container{position:relative;width:120px;height:120px}
+.float-node{position:absolute;width:10px;height:10px;border-radius:50%;opacity:0.4;animation:floatNode 6s ease-in-out infinite}
+.float-node:nth-child(1){background:var(--accent-1);top:20%;left:30%}.float-node:nth-child(2){background:var(--accent-2);top:60%;left:10%;animation-delay:1s}.float-node:nth-child(3){background:var(--accent-4);top:40%;left:70%;animation-delay:2s}.float-node:nth-child(4){background:var(--accent-5);top:75%;left:55%;animation-delay:0.5s}.float-node:nth-child(5){background:var(--accent-3);top:15%;left:65%;animation-delay:1.5s}
+.float-line{position:absolute;height:1px;background:var(--border-glow);opacity:0;animation:floatLine 6s ease-in-out infinite;transform-origin:left center}
+.float-line:nth-child(6){top:35%;left:35%;width:40px;transform:rotate(20deg);animation-delay:0.5s}.float-line:nth-child(7){top:55%;left:20%;width:50px;transform:rotate(-15deg);animation-delay:2s}.float-line:nth-child(8){top:45%;left:50%;width:30px;transform:rotate(40deg);animation-delay:3.5s}
+@keyframes floatNode{0%,100%{transform:translate(0,0);opacity:0.3}25%{transform:translate(4px,-6px);opacity:0.6}50%{transform:translate(-3px,4px);opacity:0.4}75%{transform:translate(5px,2px);opacity:0.5}}
+@keyframes floatLine{0%,100%{opacity:0}30%,70%{opacity:0.4}}
+
+/* Dormant Agents (4x3 grid for 12 agents) */
+.dormant-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:16px;max-width:420px;position:relative}
+.dormant-grid::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,var(--chip-bg) 0%,transparent 70%);border-radius:50%;animation:gridPulse 6s ease-in-out infinite}
+@keyframes gridPulse{0%,100%{opacity:0.3;transform:scale(0.95)}50%{opacity:0.6;transform:scale(1.05)}}
+.dormant-agent{display:flex;flex-direction:column;align-items:center;gap:5px;transition:all 0.8s cubic-bezier(0.4,0,0.2,1);position:relative;z-index:1}
+.dormant-avatar{width:38px;height:38px;border-radius:50%;overflow:hidden;position:relative;transition:all 0.8s cubic-bezier(0.4,0,0.2,1)}
+.dormant-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.dormant-avatar::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid var(--accent-2);opacity:0;transition:opacity 0.3s}
+.dormant-agent[data-state="sleep"] .dormant-avatar{animation:dormantFloat 4s ease-in-out infinite;opacity:0.6}
+.dormant-agent[data-state="read"] .dormant-avatar{animation:dormantBob 3s ease-in-out infinite}
+.dormant-agent[data-state="think"] .dormant-avatar{animation:dormantSpin 8s linear infinite}
+.dormant-agent[data-state="wait"] .dormant-avatar{animation:dormantBreathe 3s ease-in-out infinite}
+.dormant-agent[data-state="scan"] .dormant-avatar{animation:dormantScan 2.5s ease-in-out infinite}
+.dormant-agent[data-state="idle"] .dormant-avatar{animation:dormantFloat 5s ease-in-out infinite 0.5s}
+@keyframes dormantFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes dormantBob{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-2px) rotate(-2deg)}75%{transform:translateY(-2px) rotate(2deg)}}
+@keyframes dormantSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes dormantBreathe{0%,100%{transform:scale(1);opacity:0.7}50%{transform:scale(1.12);opacity:1}}
+@keyframes dormantScan{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
+.dormant-status{font-size:9px;color:var(--text-muted);opacity:0.7;text-align:center;min-height:12px;transition:all 0.5s}
+.dormant-name{font-size:10px;color:var(--text-secondary);opacity:0.8;font-weight:500;transition:all 0.8s}
+.dormant-agent.awakening .dormant-avatar{animation:none!important;transform:scale(1.15);box-shadow:0 0 14px var(--accent-2);opacity:1}
+.dormant-agent.awakening .dormant-name{opacity:1;color:var(--text-primary);font-weight:600}
+.dormant-agent.awakening .dormant-status{opacity:1;color:var(--accent-1)}
+.dormant-agent.awake .dormant-avatar{animation:none!important;transform:scale(1.08);box-shadow:0 0 16px var(--accent-1);opacity:1}
+.dormant-agent.awake .dormant-avatar::after{opacity:0.6;animation:awakeGlow 2s ease-in-out infinite}
+@keyframes awakeGlow{0%,100%{opacity:0.3;border-color:var(--accent-2)}50%{opacity:0.7;border-color:var(--accent-1)}}
+.dormant-agent.awake .dormant-name{opacity:1;color:var(--text-primary);font-weight:600}
+.dormant-connector{position:absolute;inset:0;z-index:0;pointer-events:none}
+.dormant-connector line{stroke:var(--accent-2);stroke-width:0.5;opacity:0;animation:connectorPulse 4s ease-in-out infinite}
+@keyframes connectorPulse{0%,100%{opacity:0}30%,70%{opacity:0.3}}
+
+/* BOTTOM BAR (post-meeting) */
+.end-bar{display:none}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:var(--modal-bg);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.active{display:flex}
+.modal{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:24px;width:420px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.modal h3{font-size:16px;font-weight:600;margin-bottom:16px;color:var(--text-primary)}
+.modal label{font-size:12px;color:var(--text-muted);display:block;margin-bottom:6px}
+.modal select,.modal input{width:100%;padding:8px 12px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-card);color:var(--text-primary);font-size:13px;font-family:var(--font-body);margin-bottom:12px}
+.modal .file-item{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13px;color:var(--text-secondary)}
+.modal .file-item svg{width:14px;height:14px;stroke:var(--accent-4);fill:none;stroke-width:2}
+.modal .context-preview{padding:10px;background:var(--bg-primary);border-radius:6px;margin:10px 0;font-size:12px;color:var(--text-muted);line-height:1.6}
+.modal .context-preview strong{color:var(--text-secondary);font-size:12px}
+.modal .project-notice{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;background:var(--chip-bg);border-radius:6px;margin-bottom:14px;font-size:12px;color:var(--text-secondary);line-height:1.5}
+.modal .project-files-section{margin-bottom:4px}
+.modal .file-list{padding:8px 12px;border:1px solid var(--border-color);border-radius:6px;margin:6px 0 12px;max-height:140px;overflow-y:auto;background:var(--bg-primary)}
+.modal .modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.history-list{display:flex;flex-direction:column;gap:8px;margin:16px 0;max-height:400px;overflow-y:auto}
+.history-item{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-primary);cursor:pointer;transition:all 0.2s}
+.history-item:hover{background:var(--bg-card-hover);border-color:var(--accent-1)}
+.history-item.active{border-color:var(--accent-1);background:var(--chip-active)}
+.history-item-info{display:flex;flex-direction:column;gap:4px}
+.history-title{font-size:14px;font-weight:500;color:var(--text-primary)}
+.history-meta{font-size:11px;color:var(--text-muted)}
+.history-badge{font-size:10px;padding:3px 8px;border-radius:4px;background:var(--chip-bg);color:var(--text-muted);font-weight:500;flex-shrink:0}
+.history-badge.current{background:var(--accent-1);color:white}
+.modal .success-state{text-align:center;padding:20px 0}
+.modal .success-state svg{width:40px;height:40px;stroke:var(--accent-4);fill:none;stroke-width:1.5;margin-bottom:8px}
+.modal .success-state p{font-size:14px;color:var(--text-primary);margin-bottom:12px}
+
+/* REPORT VIEW */
+.report-header{height:56px;display:flex;align-items:center;padding:0 24px;background:var(--bg-secondary);border-bottom:1px solid var(--border-color);flex-shrink:0;gap:12px}
+.report-body{flex:1;overflow-y:auto;padding:40px;max-width:800px;margin:0 auto;width:100%}
+.report-title{font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:6px}
+.report-meta{font-size:13px;color:var(--text-muted);margin-bottom:32px}
+.report-section{margin-bottom:28px}
+.report-section-title{font-size:15px;font-weight:600;color:var(--text-primary);padding-bottom:8px;border-bottom:2px solid var(--accent-1);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.report-section-title svg{width:16px;height:16px;stroke:var(--accent-1);fill:none;stroke-width:1.5}
+.report-kw-block{margin-bottom:16px;padding:12px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;cursor:pointer;transition:all 0.2s}
+.report-kw-block:hover{border-color:var(--border-glow)}
+.report-kw-block h4{font-size:14px;font-weight:600;color:var(--accent-1);margin-bottom:4px}
+.report-kw-block p{font-size:12px;color:var(--text-secondary);line-height:1.5}
+.report-agent-highlight{padding:10px 14px;background:var(--bg-card);border-left:3px solid var(--accent-2);border-radius:0 6px 6px 0;margin-bottom:8px;font-size:13px;color:var(--text-secondary);line-height:1.5}
+.report-agent-highlight .agent-tag{font-size:11px;font-weight:600;color:var(--accent-2);margin-bottom:3px;display:block}
+
+::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--text-muted) 30%,transparent);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:color-mix(in srgb,var(--text-muted) 50%,transparent)}
+.host-log::-webkit-scrollbar{height:2px}.host-log::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--accent-1) 25%,transparent);border-radius:2px}
+</style>
+</head>
+<body>
+<div class="app" id="appView">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="logo">AI Meeting Room</div>
+      <span class="topbar-sep">/</span>
+      <div class="meeting-title" id="meetingTitle">酶设计技术路线讨论</div>
+      <div class="meeting-duration" id="duration">00:00</div>
+      <div class="rec-badge" id="recBadge"><span class="rec-dot"></span>REC</div>
+    </div>
+    <div class="topbar-center">
+      <button class="btn btn-primary btn-lg" id="btnStart">开启会议</button>
+      <button class="btn btn-lg" id="btnPause" disabled>暂停</button>
+      <button class="btn btn-danger btn-lg" id="btnStop" disabled>结束</button>
+      <div class="speed-switcher"><button class="speed-btn active" data-speed="1">真实模拟</button><button class="speed-btn" data-speed="0.35">快速展现</button></div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-action report" id="btnReport" disabled onclick="showReport()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>会议报告</button>
+      <button class="btn-action history" id="btnHistory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>历史会议</button>
+      <div class="theme-switcher"><div class="theme-btn active" data-t="tech"></div><div class="theme-btn" data-t="light"></div><div class="theme-btn" data-t="academic"></div></div>
+    </div>
+  </div>
+  <!-- 小D Host Bar -->
+  <div class="host-bar" id="hostBar">
+    <div class="host-avatar" id="hostAvatar">
+      <video id="hostVideo" src="小D/videos/idle.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="host-info">
+      <span class="host-name">小D</span>
+      <span class="host-status" id="hostStatus">等待会议开始</span>
+    </div>
+    <div class="host-log" id="hostLog"></div>
+  </div>
+  <div class="main">
+    <div class="left-panel">
+      <div class="dialogue-section">
+        <div class="section-header"><span class="section-header-icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/></svg></span>实时对话<span class="section-badge" id="dialogueBadge">等待开始</span></div>
+        <div class="dialogue-list" id="dialogueList"><div class="empty-state" id="emptyDialogue"><div class="wave-container"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div><div class="empty-state-label">等待开启录音</div></div></div>
+      </div>
+      <div class="summary-section">
+        <div class="section-header"><span class="section-header-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></span>AI 结构化总结</div>
+        <div class="summary-content" id="summaryContent"><div class="empty-state" id="emptySummary"><div class="skeleton-container"><div class="skel-line"></div><div class="skel-line"></div><div class="skel-line"></div><div class="skel-line"></div></div><div class="empty-state-label">AI 将在对话积累后<br>自动归纳生成结构化总结</div></div></div>
+      </div>
+    </div>
+    <div class="center-panel">
+      <div class="keywords-bar" id="keywordsBar"><span class="keywords-bar-label">主题</span><span style="font-size:12px;color:var(--text-muted)" id="kwPlaceholder">等待对话中提取...</span></div>
+      <div class="research-area" id="researchArea"><div class="empty-state" id="emptyResearch"><div class="nodes-container"><div class="float-node"></div><div class="float-node"></div><div class="float-node"></div><div class="float-node"></div><div class="float-node"></div><div class="float-line"></div><div class="float-line"></div><div class="float-line"></div></div><div class="empty-state-label">知识检索待命中<br>小D将在发现主题后启动深度研究</div></div></div>
+    </div>
+    <div class="right-panel">
+      <div class="agent-header"><span class="agent-header-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></span>Agent 讨论<span class="agent-mode-label" id="agentModeLabel">圆桌研讨</span><span class="agent-status-text" id="agentStatus">待激活</span></div>
+      <div class="agent-chat-list" id="agentChat"><div class="empty-state" id="emptyAgents"><div class="dormant-grid" id="dormantGrid"></div><div class="empty-state-label">12位AI智能体待命中</div></div></div>
+    </div>
+  </div>
+  <div class="end-bar" id="endBar">
+    <button class="btn btn-primary" onclick="showReport()">查看会议报告</button>
+  </div>
+</div>
+
+<!-- REPORT VIEW -->
+<div class="report-view" id="reportView">
+  <div class="report-header">
+    <button class="btn" onclick="hideReport()">← 返回原始记录</button>
+    <div style="flex:1"></div>
+    <button class="btn">导出 PDF</button>
+    <button class="btn">分享</button>
+  </div>
+  <div class="report-body" id="reportBody"></div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="historyModal">
+  <div class="modal" style="width:520px">
+    <h3>会议记录</h3>
+    <div class="history-list">
+      <div class="history-item active" data-meeting="enzyme" onclick="loadMeeting('enzyme')">
+        <div class="history-item-info"><span class="history-title">酶设计技术路线讨论</span><span class="history-meta">2026-05-13 · 发言人1、发言人2、发言人3、发言人4</span></div>
+        <span class="history-badge current">当前</span>
+      </div>
+      <div class="history-item" data-meeting="drug" onclick="loadMeeting('drug')">
+        <div class="history-item-info"><span class="history-title">AI药物发现pipeline评审</span><span class="history-meta">2026-05-08 · 发言人1、发言人2、发言人3</span></div>
+        <span class="history-badge">已结束</span>
+      </div>
+      <div class="history-item" data-meeting="climate" onclick="loadMeeting('climate')">
+        <div class="history-item-info"><span class="history-title">气候模型多尺度耦合方案</span><span class="history-meta">2026-05-03 · 发言人1、发言人2、发言人3</span></div>
+        <span class="history-badge">已结束</span>
+      </div>
+    </div>
+    <div class="modal-actions"><button class="btn" onclick="hideModal('historyModal')">关闭</button><button class="btn btn-primary" onclick="newMeeting()">+ 新建会议</button></div>
+  </div>
+</div>
+
+<script>
+// ===== SPEED =====
+let speedMultiplier=0.35;
+function sd(ms){return ms*speedMultiplier}
+document.querySelectorAll('.speed-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.speed-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');speedMultiplier=parseFloat(btn.dataset.speed);});});
+
+// ===== AVATAR SYSTEM (Boring Avatars Beam-inspired, local) =====
+const palettes={
+  explore:['#0ea5e9','#38bdf8','#7dd3fc','#e0f2fe'],
+  critic:['#dc2626','#f87171','#fca5a5','#fee2e2'],
+  practice:['#059669','#34d399','#6ee7b7','#d1fae5'],
+  compliance:['#d97706','#fbbf24','#fcd34d','#fef3c7'],
+  creative:['#7c3aed','#a78bfa','#c4b5fd','#ede9fe'],
+  summary:['#4f46e5','#818cf8','#a5b4fc','#e0e7ff'],
+  literature:['#06b6d4','#22d3ee','#67e8f9','#cffafe'],
+  experiment:['#14b8a6','#2dd4bf','#5eead4','#ccfbf1'],
+  data:['#f97316','#fb923c','#fdba74','#ffedd5'],
+  compete:['#e11d48','#fb7185','#fda4af','#ffe4e6'],
+  bridge:['#8b5cf6','#a78bfa','#c4b5fd','#ede9fe'],
+  risk:['#dc2626','#ef4444','#fca5a5','#fee2e2'],
+  ethics:['#d97706','#fbbf24','#fcd34d','#fef3c7']
+};
+function getAvatarUrl(agentId){
+  const c=palettes[agentId]||palettes.explore;
+  const svg=`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g${agentId}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${c[0]}"/><stop offset="100%" stop-color="${c[1]}"/></linearGradient></defs><rect width="80" height="80" rx="40" fill="${c[3]}"/><circle cx="40" cy="40" r="24" fill="url(#g${agentId})"/><circle cx="34" cy="36" r="3" fill="${c[3]}"/><circle cx="46" cy="36" r="3" fill="${c[3]}"/><path d="M34 47c3 3 9 3 12 0" stroke="${c[3]}" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`;
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
+// ===== TOKENIZE =====
+function tokenize(html){
+  const tokens=[];const tagRe=/<span[^>]*>.*?<\/span>|<br\s*\/?>/g;
+  let last=0,m;
+  while((m=tagRe.exec(html))!==null){if(m.index>last)tokens.push(...splitPlain(html.slice(last,m.index)));tokens.push(m[0]);last=m.index+m[0].length;}
+  if(last<html.length)tokens.push(...splitPlain(html.slice(last)));
+  return tokens.filter(t=>t);
+}
+function splitPlain(str){return str.match(/[一-鿿㐀-䶿]|[a-zA-Z0-9]+|[^\s一-鿿㐀-䶿\w]+|\s+/g)||[];}
+
+// ===== 12 AGENTS (unified pool) =====
+const allAgents=[
+  {id:'explore',   name:'深度拓展',  color:'var(--agent-explore)',     role:'技术纵深',  dormant:'read',  dormantLabel:'阅读前沿论文'},
+  {id:'critic',    name:'质疑挑战',  color:'var(--agent-critic)',      role:'红方视角',  dormant:'think', dormantLabel:'推敲逻辑链'},
+  {id:'practice',  name:'落地评估',  color:'var(--agent-practice)',    role:'可行性',    dormant:'scan',  dormantLabel:'扫描预算表'},
+  {id:'creative',  name:'创意发散',  color:'var(--agent-creative)',    role:'跨域灵感',  dormant:'idle',  dormantLabel:'白日梦中...'},
+  {id:'literature',name:'文献考据',  color:'#06b6d4',                 role:'溯源验证',  dormant:'read',  dormantLabel:'交叉对比引用'},
+  {id:'experiment',name:'实验设计',  color:'#14b8a6',                 role:'方案设计',  dormant:'wait',  dormantLabel:'校准移液器'},
+  {id:'data',      name:'数据审计',  color:'#f97316',                 role:'统计审查',  dormant:'scan',  dormantLabel:'检查p值'},
+  {id:'compete',   name:'竞争情报',  color:'#e11d48',                 role:'对标分析',  dormant:'scan',  dormantLabel:'追踪竞品动态'},
+  {id:'bridge',    name:'跨学科桥梁',color:'#8b5cf6',                 role:'领域交叉',  dormant:'think', dormantLabel:'联想类比中'},
+  {id:'risk',      name:'风险预警',  color:'#dc2626',                 role:'风险识别',  dormant:'wait',  dormantLabel:'监听异常信号'},
+  {id:'ethics',    name:'伦理合规',  color:'var(--agent-compliance)', role:'合规审查',  dormant:'sleep', dormantLabel:'待命中'},
+  {id:'summary',   name:'归纳总结',  color:'var(--agent-summary)',    role:'汇总共识',  dormant:'idle',  dormantLabel:'整理笔记'}
+];
+
+// 小D per-topic agent selection (simulated intelligence)
+const topicAgentMap={
+  'CRISPR-Cas蛋白工程':{
+    wave1:{agents:['explore','critic','practice'],trigger:'initial',msgRange:[0,2]},
+    wave2:{agents:['creative','ethics'],trigger:'mid',msgRange:[3,5]},
+    wave3:{agents:['explore','practice','critic','creative'],trigger:'userRef',msgRange:[6,10]},
+    wave4:{agents:['explore','critic','summary'],trigger:'late',msgRange:[11,15]}
+  },
+  '蛋白质从头设计':{
+    wave1:{agents:['explore','critic','practice'],trigger:'initial',msgRange:[0,2]},
+    wave2:{agents:['creative','ethics','summary'],trigger:'mid',msgRange:[3,5]},
+    wave3:{agents:['explore','practice','literature','experiment'],trigger:'userRef',msgRange:[6,9]},
+    wave4:{agents:['critic','creative','summary','practice'],trigger:'late',msgRange:[10,13]}
+  },
+  'RFdiffusion':{
+    wave1:{agents:['explore','practice','critic'],trigger:'initial',msgRange:[0,2]},
+    wave2:{agents:['creative','data','bridge'],trigger:'mid',msgRange:[3,5]},
+    wave3:{agents:['explore','practice','critic'],trigger:'userRef',msgRange:[6,9]},
+    wave4:{agents:['practice','summary','explore','summary'],trigger:'late',msgRange:[10,13]}
+  }
+};
+
+// ===== DATA =====
+const dialogueData=[
+  {speaker:"发言人1",color:"#6366f1",text:"今天继续讨论酶设计的技术路线。上次我们初步倾向AF3加定向进化联合方案，今天要深入一些细节。",id:"d0"},
+  {speaker:"发言人2",color:"#10b981",text:"我这周做了一些预实验，AF3预测的结构和实际表达产物的CD光谱吻合度还不错，fold正确率大概80%左右。",id:"d1"},
+  {speaker:"发言人3",color:"#f59e0b",text:"但催化活性怎么样？结构对了不代表功能对。活性位点的定位精度才是我们面临的关键瓶颈。",id:"d2"},
+  {speaker:"发言人4",color:"#ec4899",text:"我在文献里看到有团队用FoldDesign做活性位点约束，成功率比纯AF3高一截。",id:"d2b"},
+  {speaker:"发言人1",color:"#6366f1",text:"对，这是核心问题。帮我查一下CRISPR-Cas蛋白工程的最新进展，我想看看那边的方法论能不能借鉴过来。",trigger:"CRISPR-Cas蛋白工程",id:"d3"},
+  {speaker:"发言人2",color:"#10b981",text:"CRISPR那边做蛋白改造确实积累了很多经验，特别是Cas酶的定向改造方法论非常系统化了。",id:"d4"},
+  {speaker:"发言人4",color:"#ec4899",text:"刘如谦组做的碱基编辑器就是通过蛋白工程改造Cas9实现的，TadA脱氨酶经过了7轮PACE进化。",id:"d5"},
+  {speaker:"发言人3",color:"#f59e0b",text:"CRISPR领域的高通量筛选平台也很成熟，我们可能可以直接复用他们的筛选体系来加速。",id:"d6"},
+  {speaker:"发言人1",color:"#6366f1",text:"不过CRISPR改造的目标相对简单，改变底物特异性是离散选择。我们要提升催化效率难得多。",id:"d7"},
+  {speaker:"发言人2",color:"#10b981",text:"但我觉得他们的筛选逻辑可以迁移，高通量+ML预测这个框架是通用的。",id:"d7b"},
+  {speaker:"发言人4",color:"#ec4899",text:"对，而且Zhang组的那个500样本就能做预测模型的方法论对我们特别有启发。",id:"d7c"},
+  {speaker:"发言人2",color:"#10b981",text:"刚才AI提到的ML只需500个样本就能预测突变效果，这个门槛我们完全够得到，值得试试。",id:"d8",agentRef:{agent:'explore',keyword:'CRISPR-Cas蛋白工程',text:'仅500训练样本即可预测突变效果',msgIdx:0}},
+  {speaker:"发言人3",color:"#f59e0b",text:"500样本如果真的可行，那我们第一轮定向进化的数据就可以直接喂模型了。这个idea不错。",id:"d8b"},
+  {speaker:"发言人1",color:"#6366f1",text:"不过质疑挑战那边说的也有道理——连续优化和离散选择确实本质不同。我们得设计好fitness函数。",id:"d8c",agentRef:{agent:'critic',keyword:'CRISPR-Cas蛋白工程',text:'酶设计追求催化效率提升（连续优化kcat/KM），筛选体系设计难度完全不同',msgIdx:1}},
+  {speaker:"发言人4",color:"#ec4899",text:"fitness函数方面，我看到有用荧光共振来做高通量活性检测的方案，一天能筛一万个变体。",id:"d8d"},
+  {speaker:"发言人3",color:"#f59e0b",text:"好，另一个方向。蛋白质从头设计这个大领域整体发展到什么阶段了？跟酶设计相关的最新突破是什么？",trigger:"蛋白质从头设计",id:"d9"},
+  {speaker:"发言人4",color:"#ec4899",text:"蛋白质从头设计最近两年进展非常快。自从RFdiffusion发表以后，很多组都跟进了。",id:"d10"},
+  {speaker:"发言人1",color:"#6366f1",text:"Baker组的成功率数字一直在涨，但注意他们的定义——fold正确不是有活性。实际可用率低很多。",id:"d11"},
+  {speaker:"发言人3",color:"#f59e0b",text:"设计成功率从15%提到50%+，但按高活性标准只有20-25%。这对路线选择有直接参考价值。",id:"d12"},
+  {speaker:"发言人2",color:"#10b981",text:"所以每轮至少要设计20个候选才能有4-5个有高活性的。工作量不小。",id:"d12b"},
+  {speaker:"发言人1",color:"#6366f1",text:"但比定向进化还是快。定向进化每轮筛十万级，从头设计只需二十个。",id:"d12c"},
+  {speaker:"发言人2",color:"#10b981",text:"对了，RFdiffusion和AF3其实是互补的。一个从零生成骨架，一个验证优化。该了解下RFdiffusion具体能做什么。",trigger:"RFdiffusion",id:"d13"},
+  {speaker:"发言人4",color:"#ec4899",text:"RFdiffusion开源了，Baker组A100单卡20分钟就能生成一个全新骨架。计算资源门槛不高。",id:"d14"},
+  {speaker:"发言人1",color:"#6366f1",text:"但RFdiffusion在活性位点设计上表现不好？Kortemme组加催化约束后成功率只有15%。",id:"d15"},
+  {speaker:"发言人2",color:"#10b981",text:"RFdiffusion2据说改进了约束生成能力，但还是预印本阶段。我们要不要等正式发表？",id:"d15b"},
+  {speaker:"发言人3",color:"#f59e0b",text:"不等了。预印本的方法我们先试。我更关心的是串联策略能不能跑通。",id:"d15c"},
+  {speaker:"发言人3",color:"#f59e0b",text:"对，Agent说的那个串联思路我觉得有道理——用RFdiffusion做多样性，AF3做精度，最后定向进化微调。",id:"d16",agentRef:{agent:'creative',keyword:'蛋白质从头设计',text:'三种方法串联而非并联，预计成功率从25%提到40%+',msgIdx:3}},
+  {speaker:"发言人2",color:"#10b981",text:"串联流程单轮6-8周，2年课题期限内大概能做8-10轮。如果分工并联可能更快。",id:"d17"},
+  {speaker:"发言人4",color:"#ec4899",text:"我可以负责RFdiffusion那段的计算。20分钟一个骨架的话，一天跑72个没问题。",id:"d17b"},
+  {speaker:"发言人1",color:"#6366f1",text:"好，你负责骨架生成这段。发言人2负责AF3验证，发言人3负责实验端。",id:"d17c"},
+  {speaker:"发言人1",color:"#6366f1",text:"合规审查那边提醒的IP问题也要注意，RFdiffusion只能学术用。我们先确认这一点。",id:"d18",agentRef:{agent:'ethics',keyword:'蛋白质从头设计',text:'RFdiffusion开源协议仅限学术使用，需评估Baker组专利覆盖',msgIdx:4}},
+  {speaker:"发言人3",color:"#f59e0b",text:"学术使用应该没问题，我们课题组本身就是纯学术。但如果后面想转化就得另说了。",id:"d18b"},
+  {speaker:"发言人2",color:"#10b981",text:"其实还有个问题——落地评估说的骨架图书馆策略，一次生成100+再筛选top10，这个思路效率更高。",id:"d18c",agentRef:{agent:'practice',keyword:'RFdiffusion',text:'做"骨架图书馆"批量生成100+筛选top10',msgIdx:1}},
+  {speaker:"发言人4",color:"#ec4899",text:"100个骨架也就2000分钟计算时间，约33小时。一台A100两天跑完。完全可行。",id:"d18d"},
+  {speaker:"发言人1",color:"#6366f1",text:"好思路。那我们的流程就是：骨架图书馆100+→AF3筛top10→ProteinMPNN→表达验证→定向进化。",id:"d19"},
+  {speaker:"发言人3",color:"#f59e0b",text:"预算方面呢？落地评估给的15万做第一轮验证的估算靠不靠谱？",id:"d19b",agentRef:{agent:'practice',keyword:'CRISPR-Cas蛋白工程',text:'约15万实验经费，3个月第一轮验证',msgIdx:2}},
+  {speaker:"发言人2",color:"#10b981",text:"15万做第一轮应该差不多。表达纯化加活性筛选主要开销在试剂耗材。",id:"d19c"},
+  {speaker:"发言人1",color:"#6366f1",text:"好。今天信息量挺大的，等研究报告完整后我们再对比三条路线做最终决策。",id:"d20"},
+  {speaker:"发言人3",color:"#f59e0b",text:"对了，归纳总结那边说的共识我基本认同。联合方案确定性高、风险可控。",id:"d20b",agentRef:{agent:'summary',keyword:'蛋白质从头设计',text:'推荐AF3+定向进化联合（确定性高）',msgIdx:5}},
+  {speaker:"发言人4",color:"#ec4899",text:"我也同意。而且前端加上RFdiffusion做骨架多样性这个增量不大，收益挺明显的。",id:"d20c"},
+  {speaker:"发言人2",color:"#10b981",text:"串联方案的关键风险在于单轮时间。如果哪个环节卡住了整个pipeline都延迟。",id:"d20d"},
+  {speaker:"发言人1",color:"#6366f1",text:"所以我们可以考虑pipeline内部做并行——比如骨架生成和上一轮的定向进化同时进行。",id:"d20e"},
+  {speaker:"发言人3",color:"#f59e0b",text:"好的。下次会议做最终决策。大家这周整理一下各自负责方向的数据。散会。",id:"d21"}
+];
+const keywordsToExtract=[{text:"CRISPR-Cas蛋白工程",triggerAt:4},{text:"蛋白质从头设计",triggerAt:15},{text:"RFdiffusion",triggerAt:21}];
+const summaryVersions=[
+  {triggerAfter:4,blocks:[{icon:"target",color:"var(--accent-1)",title:"核心议题",tag:"进行中",points:["评估AF3+定向进化联合方案的实验可行性","AF3预测结构验证正面（fold正确率~80%）","活性位点定位精度是当前核心瓶颈","FoldDesign活性位点约束方案待评估"]}]},
+  {triggerAfter:10,blocks:[{icon:"target",color:"var(--accent-1)",title:"核心议题",tag:"聚焦",points:["联合方案核心瓶颈：催化活性连续优化","探索<span class='kw-hl'>CRISPR-Cas蛋白工程</span>方法论借鉴","高通量筛选体系复用可行性评估"]},{icon:"zap",color:"var(--accent-5)",title:"关键发现",tag:"方法论",points:["CRISPR蛋白改造方法论：结构引导+ML预测+高通量验证","ML仅需500样本即可预测（张锋组2025）","TadA脱氨酶7轮PACE进化先例","高通量筛选平台可直接复用","关键差异：CRISPR做离散选择 vs 酶设计做连续优化","团队确认500样本门槛可行"]},{icon:"alert",color:"var(--accent-danger)",title:"待解决",tag:"2项",points:["fitness函数设计（连续优化指标）","荧光共振高通量活性检测方案验证"]}]},
+  {triggerAfter:20,blocks:[{icon:"target",color:"var(--accent-1)",title:"议题聚焦",tag:"3方向",points:["<span class='kw-hl'>CRISPR-Cas蛋白工程</span>方法论借鉴","<span class='kw-hl'>蛋白质从头设计</span>整体进展评估","成功率定义区分：fold正确(50%+) vs 有催化活性(20-25%)","每轮需设计20+候选保证4-5个高活性","从头设计比定向进化快：20个候选 vs 十万级筛选"]},{icon:"zap",color:"var(--accent-5)",title:"技术线索",tag:"8条",points:["ML-guided策略降低筛选规模（500样本）","设计成功率：fold 50%+ vs 高活性仅20-25%","<span class='kw-hl'>RFdiffusion</span>与AF3互补可串联","串联方案理论成功率25%→40%+","RFdiffusion开源A100/20min","RFdiffusion2增加功能约束（预印本）","骨架图书馆策略：100+批量生成→top10筛选","ProteinMPNN序列优化可叠加"]},{icon:"check",color:"var(--accent-4)",title:"方法论迁移评估",tag:"CRISPR→酶",points:["可迁移：ML预测框架、高通量筛选逻辑","需适配：fitness函数从离散→连续","新方案：荧光共振高通量检测（万级/天）"]}]},
+  {triggerAfter:30,blocks:[{icon:"target",color:"var(--accent-1)",title:"路线对比",tag:"决策中",points:["三条主路线：纯AF3 / 纯定向进化 / 计算+实验联合","串联方案：RFdiff→AF3→ProteinMPNN→定向进化","RFdiffusion定位为骨架多样性工具","骨架图书馆（100+骨架）→AF3筛选top10→聚焦优化","分工：发言人4-计算骨架 / 发言人2-AF3验证 / 发言人3-实验端"]},{icon:"check",color:"var(--accent-4)",title:"团队共识",tag:"6项",points:["ML-guided策略可行（500样本门槛够得到）","串联思路有道理，需控制单轮周期6-8周","IP风险：学术使用OK，后续转化需另评","15万预算第一轮验证（试剂耗材主导）","联合方案确定性高、风险可控（多人认同）","pipeline内部做并行：骨架生成与上轮进化同步"]},{icon:"alert",color:"var(--accent-danger)",title:"风险与行动",tag:"Action",points:["IP：RFdiffusion仅学术使用（纯学术无碍，转化需评估）","单点风险：串联pipeline某环节卡住则全线延迟","缓解：pipeline并行化设计","下次会议：系统对比三条路线做最终决策","各自整理负责方向数据（本周完成）"]},{icon:"zap",color:"var(--accent-5)",title:"资源分配",tag:"初步",points:["计算资源：A100×1，33h跑完100骨架","实验预算：首轮15万（表达纯化+活性筛选）","人力分工：3人并行三个模块","时间：2年课题期限内8-10轮迭代空间"]}]}
+];
+const researchData={"CRISPR-Cas蛋白工程":{steps:[{title:"制定计划",status:"completed",thinking:"分析核心子问题，聚焦方法论迁移...",type:"plan",content:{directions:["CRISPR-Cas蛋白工程方法论体系","高通量筛选平台应用","ML辅助蛋白进化（2024-2025）","方法论迁移可行性"]}},{title:"文献检索",status:"completed",thinking:"检索PubMed+Semantic Scholar...",type:"citations",content:{total:42,selected:8,papers:[{journal:"Nature 2024",title:"Evolved Cas9 variants with broad PAM compatibility",authors:"Kleinstiver Lab",citations:312},{journal:"Science 2025",title:"ML-guided directed evolution of CRISPR-Cas effectors",authors:"Zhang Feng Lab",citations:156},{journal:"Cell 2024",title:"Structure-guided engineering of Cas12a",authors:"Doudna Lab",citations:203},{journal:"Nat Biotech 2024",title:"Programmable base editing with evolved TadA",authors:"Liu DR Lab",citations:278}]}},{title:"深度阅读",status:"completed",thinking:"精读Top 6篇论文...",type:"knowledge_graph",content:{findings:"核心范式：结构引导+ML预测+高通量验证。Zhang组2025年证明500样本即可预测突变效果。",nodes:[{id:"结构引导",x:80,y:55,type:"method"},{id:"ML预测",x:250,y:45,type:"method"},{id:"高通量验证",x:400,y:55,type:"method"},{id:"Cas9改造",x:130,y:135,type:"app"},{id:"碱基编辑器",x:300,y:125,type:"app"},{id:"酶设计迁移",x:250,y:195,type:"output"}],edges:[{from:"结构引导",to:"Cas9改造"},{from:"ML预测",to:"碱基编辑器"},{from:"Cas9改造",to:"酶设计迁移"},{from:"碱基编辑器",to:"酶设计迁移"}]}},{title:"知识综合",status:"completed",thinking:"对比方法论适配性...",type:"comparison",content:{headers:["方法","原应用","迁移目标","成熟度"],rows:[["结构引导突变","Cas9 PAM域","酶活性位点","高"],["ML辅助进化","预测Cas突变","缩减突变库","中高"],["PACE连续进化","TadA进化","目标酶进化","中"],["模块化嵌合","Cas9融合","结构域重组","中高"]]}},{title:"发展脉络",status:"completed",thinking:"梳理关键节点...",type:"timeline",content:{nodes:[{year:"2012",event:"CRISPR-Cas9首次报道",milestone:true},{year:"2017",event:"碱基编辑器ABE发表",milestone:true},{year:"2019",event:"Prime Editing发布",milestone:true},{year:"2025",event:"500样本预测模型",milestone:true},{year:"~2026",event:"通用蛋白工程平台",future:true}]}},{title:"验证与引用",status:"completed",thinking:"验证来源...",type:"credibility",content:{sources:[{label:"Nature/Science",value:97,level:"high"},{label:"Nat Biotech",value:96,level:"high"},{label:"bioRxiv",value:65,level:"medium"}]}}]},"蛋白质从头设计":{steps:[{title:"制定计划",status:"completed",thinking:"分析核心子问题...",type:"plan",content:{directions:["技术路线演进","主流方法对比","酶设计挑战","成功率因素"]}},{title:"文献检索",status:"completed",thinking:"检索近3年论文...",type:"citations",content:{total:48,selected:12,papers:[{journal:"Nature 2024",title:"AlphaFold 3 biomolecular interactions",authors:"Abramson et al.",citations:1247},{journal:"Science 2023",title:"De novo design with RFdiffusion",authors:"Watson et al.",citations:892},{journal:"Science 2025",title:"Computational enzyme design verified",authors:"Yeh et al.",citations:156},{journal:"Nature 2022",title:"Hallucinating protein sequences",authors:"Anishchenko et al.",citations:634}]}},{title:"深度阅读",status:"completed",thinking:"精读核心论文...",type:"knowledge_graph",content:{findings:"三代方法差异在序列-结构映射策略。酶设计额外需要活性位点几何约束。",nodes:[{id:"AF3",x:200,y:50,type:"method"},{id:"RFdiffusion",x:350,y:50,type:"method"},{id:"Rosetta",x:80,y:50,type:"method"},{id:"酶设计",x:220,y:170,type:"app"},{id:"活性位点",x:370,y:170,type:"constraint"}],edges:[{from:"AF3",to:"酶设计"},{from:"RFdiffusion",to:"酶设计"},{from:"Rosetta",to:"酶设计"},{from:"酶设计",to:"活性位点"}]}},{title:"知识综合",status:"completed",thinking:"对比路线...",type:"comparison",content:{headers:["方法","周期","成功率","局限"],rows:[["AF3+ProteinMPNN","2-4周","60%/25%","新骨架弱"],["RFdiffusion","1-3周","50%/15%","活性位点弱"],["定向进化","3-6月","1-5%/轮","需起始序列"],["联合方案","1-2月","→90%","流程复杂"]]}},{title:"发展脉络",status:"completed",thinking:"梳理节点...",type:"timeline",content:{nodes:[{year:"1997",event:"首个从头设计蛋白Top7"},{year:"2020",event:"AlphaFold2突破",milestone:true},{year:"2023",event:"RFdiffusion发布",milestone:true},{year:"2025",event:"AI酶活性达天然水平",milestone:true},{year:"~2027",event:"端到端酶设计平台",future:true}]}},{title:"验证与引用",status:"completed",thinking:"验证引用...",type:"credibility",content:{sources:[{label:"Nature/Science",value:98,level:"high"},{label:"Nat Methods",value:90,level:"high"},{label:"bioRxiv",value:60,level:"medium"}]}}]},"RFdiffusion":{steps:[{title:"制定计划",status:"completed",thinking:"聚焦原理与适用性...",type:"plan",content:{directions:["扩散模型创新点","与AF3互补性","应用案例","路线推荐"]}},{title:"文献检索",status:"completed",thinking:"检索核心文献...",type:"citations",content:{total:28,selected:6,papers:[{journal:"Science 2023",title:"De novo design with RFdiffusion",authors:"Watson et al.",citations:892},{journal:"Nature 2024",title:"RFdiffusion binder proteins picomolar affinity",authors:"Cao et al.",citations:234},{journal:"bioRxiv 2025",title:"RFdiffusion2 with functional constraints",authors:"Baker Lab",citations:45},{journal:"ACS Catal 2025",title:"Diffusion-based enzyme scaffold design",authors:"Kortemme Lab",citations:67}]}},{title:"深度阅读",status:"completed",thinking:"提取关键突破...",type:"knowledge_graph",content:{findings:"从零生成全新骨架。RFdiffusion2增加活性位点约束。与AF3互补。",nodes:[{id:"RFdiffusion",x:240,y:45,type:"method"},{id:"去噪扩散",x:100,y:120,type:"tech"},{id:"骨架生成",x:380,y:120,type:"output"},{id:"AF3",x:100,y:45,type:"method"},{id:"活性位点",x:240,y:180,type:"constraint"}],edges:[{from:"RFdiffusion",to:"去噪扩散"},{from:"RFdiffusion",to:"骨架生成"},{from:"AF3",to:"RFdiffusion"},{from:"骨架生成",to:"活性位点"}]}},{title:"知识综合",status:"completed",thinking:"对比场景表现...",type:"comparison",content:{headers:["场景","成功率","优势","局限"],rows:[["骨架生成","85%+","全新拓扑","无功能约束"],["结合位点","60-70%","高亲和力","仅形状互补"],["酶活性位点","15%","多样性","催化几何弱"],["RFdiff2","30-40%","改进","待验证"]]}},{title:"发展脉络",status:"completed",thinking:"梳理发展...",type:"timeline",content:{nodes:[{year:"2023.03",event:"RFdiffusion发布",milestone:true},{year:"2023.09",event:"开源权重代码",milestone:true},{year:"2024.06",event:"picomolar结合蛋白",milestone:true},{year:"2025.01",event:"RFdiffusion2功能约束",milestone:true},{year:"~2026",event:"集成端到端设计",future:true}]}},{title:"验证与引用",status:"completed",thinking:"评估可靠性...",type:"credibility",content:{sources:[{label:"Science",value:98,level:"high"},{label:"Nature",value:97,level:"high"},{label:"bioRxiv",value:55,level:"medium"}]}}]}};
+
+// Agent discussions (using roundtable mode as the default for 小D orchestrated flow)
+const agentDiscussions={"CRISPR-Cas蛋白工程":[
+  {agent:'explore',thinking:'分析CRISPR方法论可迁移性...',replyTo:{type:'dialogue',speaker:'发言人1',text:'帮我查一下CRISPR-Cas蛋白工程的最新进展',dialogueId:'d3'},text:'从文献来看，CRISPR蛋白工程最核心的方法论突破是<span class="em">「结构引导+ML预测+高通量验证」三位一体</span>的范式。Zhang Feng组2025年证明仅需500个训练样本就能预测突变效果，这个数据量门槛对我们酶设计项目完全可及。'},
+  {agent:'critic',thinking:'评估迁移差异...',replyTo:{type:'dialogue',speaker:'发言人3',text:'活性位点的定位精度才是关键瓶颈',dialogueId:'d2'},text:'关键差异：Cas蛋白改造目标是<span class="em">改变底物特异性</span>（离散选择），我们的酶设计追求<span class="em">催化效率提升</span>（连续优化kcat/KM）。筛选体系设计难度完全不同。'},
+  {agent:'practice',thinking:'评估资源投入...',replyTo:{type:'research',stepName:'知识综合'},text:'基于对比数据，建议务实路径——<span class="em">不自建PACE平台</span>，用ML-guided小库+96孔板筛选。约15万实验经费，3个月第一轮验证。'},
+  {agent:'creative',thinking:'探索非常规角度...',replyTo:null,text:'非常规想法：设计<span class="em">「可编程酶」</span>，像Cas9通过guide RNA指定底物。RNA-guided ribozyme（2024 Science）已有先例。风险高但如果成功是CNS级工作。'},
+  {agent:'ethics',thinking:'审查合规风险...',replyTo:null,text:'合规要点：(1) 基因编辑实验需IBC审批；(2) CRISPR核心专利仍在诉讼；(3) PACE涉及噬菌体需BSL-2。建议先确认实验资质。'},
+  {agent:'critic',thinking:'评估creative方案...',replyTo:{type:'agent',agentName:'创意发散'},text:'对可编程酶持保留态度。ribozyme催化效率仅蛋白酶万分之一。2年约束下不明智，<span class="em">列为远期探索</span>。'},
+  {agent:'explore',thinking:'回应用户关于500样本的讨论...',replyTo:{type:'dialogue',speaker:'发言人2',text:'ML只需500个样本就能预测突变效果，这个门槛我们完全够得到',dialogueId:'d8'},text:'补充：Zhang组的模型架构是<span class="em">ESM-2 fine-tuning</span>，预训练模型已包含进化信息。500样本是fine-tune数据量，不是从头训练。意味着我们首轮定向进化的数据确实可以直接复用。'},
+  {agent:'practice',thinking:'响应用户500样本确认...',replyTo:{type:'dialogue',speaker:'发言人3',text:'500样本如果真的可行，那我们第一轮定向进化的数据就可以直接喂模型',dialogueId:'d8b'},text:'具体操作建议：第一轮96孔板筛选后，用<span class="em">活性数据做training set</span>。二轮筛选量可降至24孔板。计算成本几乎为零（CPU即可fine-tune ESM-2小模型）。'},
+  {agent:'critic',thinking:'回应连续优化问题...',replyTo:{type:'dialogue',speaker:'发言人1',text:'质疑挑战说的也有道理——连续优化和离散选择确实本质不同',dialogueId:'d8c'},text:'感谢认同。补充一点：<span class="em">fitness landscape的凹凸性</span>决定了ML预测的难度。离散选择是分类任务（简单），连续优化是回归任务（需要更多数据），500样本做回归精度会打折扣，建议<span class="em">首轮以800-1000样本为目标</span>。'},
+  {agent:'creative',thinking:'响应荧光检测方案...',replyTo:{type:'dialogue',speaker:'发言人4',text:'用荧光共振来做高通量活性检测的方案',dialogueId:'d8d'},text:'荧光共振是好方向。更进一步：最近有组用<span class="em">droplet microfluidics + FRET</span>做单细胞级酶活检测，通量可达<span class="em">每天百万级</span>。结合ML预测做预筛，只检测top 1%，工作量锐减。'},
+  {agent:'explore',thinking:'补充预筛策略...',replyTo:{type:'agent',agentName:'创意发散'},text:'接创意发散的思路：ML预筛+droplet验证的<span class="em">two-stage策略</span>在Baker组2024年酶设计中已经验证过。计算筛1万→实验验证top100→高精度验证top10。'},
+  {agent:'summary',thinking:'阶段性汇总...',replyTo:null,text:'<span class="em">【共识】</span>CRISPR方法论可迁移，核心「ML+结构引导+筛选」<br><span class="em">【分歧】</span>催化活性连续优化需更多样本（500→800-1000）<br><span class="em">【建议】</span>ML-guided小库验证（3月/15万）+ droplet高通量<br><span class="em">【工具链】</span>ESM-2 fine-tune + 96孔板 + FRET<br><span class="em">【暂不】</span>自建PACE / 可编程酶（远期探索）'},
+  {agent:'practice',thinking:'细化预算...',replyTo:{type:'agent',agentName:'归纳总结'},text:'补充预算明细：<span class="em">96孔板试剂3万 + 表达纯化5万 + 检测耗材4万 + 人工测序3万 = 15万</span>。如果加droplet设备另需8-10万租赁费，建议二轮再加。'},
+  {agent:'explore',thinking:'技术路径补充...',replyTo:null,text:'最新动态：Stirling组2025年3月发表<span class="em">ProEvol</span>框架，将ML预测与定向进化做了端到端集成。声称相比传统策略效率提升5×。值得关注但未经第三方验证。'},
+  {agent:'critic',thinking:'评估ProEvol...',replyTo:{type:'agent',agentName:'深度拓展'},text:'ProEvol声明的5×效率提升<span class="em">没有在酶催化活性任务上验证过</span>，只做了蛋白稳定性。催化活性的fitness landscape更复杂，打折预估2-3×提升比较合理。'},
+  {agent:'summary',thinking:'最终汇总...',replyTo:null,text:'<span class="em">【最终建议方案】</span><br>1. 首轮：ML-guided 96孔板（3月/15万）<br>2. 样本目标：800-1000（比原估计稍多）<br>3. 二轮：droplet高通量验证top候选<br>4. 模型：ESM-2 fine-tune（CPU即可）<br>5. 远期关注：ProEvol框架 + 微环境工程'}
+],"蛋白质从头设计":[
+  {agent:'explore',thinking:'分析技术演进...',replyTo:{type:'dialogue',speaker:'发言人3',text:'蛋白质从头设计整体发展到什么阶段',dialogueId:'d9'},text:'蛋白质从头设计正处于<span class="em">第三次范式转变</span>：物理→统计→生成式AI。设计成功率15%→50-70%，计算设计真正具有实验价值。'},
+  {agent:'critic',thinking:'审视成功率定义...',replyTo:{type:'dialogue',speaker:'发言人1',text:'注意他们的定义——fold正确不是有活性',dialogueId:'d11'},text:'60%"可检测活性"和25%"高活性"差距巨大。按天然水平标准，<span class="em">实际可用率只有20-25%</span>。每轮需设计20-30候选。'},
+  {agent:'practice',thinking:'评估路线可行性...',replyTo:{type:'research',stepName:'知识综合'},text:'基于对比，<span class="em">AF3+定向进化联合</span>最适合：首轮4周AF3生成候选，二轮定向进化优化。3-4月初步结果。'},
+  {agent:'creative',thinking:'构思方法组合...',replyTo:{type:'dialogue',speaker:'发言人2',text:'RFdiffusion和AF3其实是互补的',dialogueId:'d13'},text:'<span class="em">三种方法串联而非并联</span>：RFdiffusion生成骨架→AF3验证稳定性→ProteinMPNN优化序列→短周期定向进化微调。预计高活性成功率从25%提到40%+。'},
+  {agent:'ethics',thinking:'评估IP布局...',replyTo:null,text:'IP提醒：<span class="em">RFdiffusion仅限学术使用</span>。如有产业化可能需评估Baker组专利。AF3已开源MIT协议。ProteinMPNN无商用限制。'},
+  {agent:'summary',thinking:'整合方案...',replyTo:null,text:'<span class="em">【推荐】</span>AF3+定向进化联合（确定性高）<br><span class="em">【增强】</span>前端加RFdiffusion做骨架多样性<br><span class="em">【风险】</span>每轮需20+候选；RFdiffusion仅学术<br><span class="em">【预算】</span>首轮3-4月，18月内2-3轮迭代'},
+  {agent:'explore',thinking:'回应串联方案讨论...',replyTo:{type:'dialogue',speaker:'发言人3',text:'Agent说的那个串联思路我觉得有道理',dialogueId:'d16'},text:'感谢认可。串联方案的关键是<span class="em">每个环节的exit criteria</span>要清晰：RFdiffusion出结果→pLDDT>85的进入AF3→ΔG<-5 kcal/mol的进入ProteinMPNN→表达量>1mg/mL的做定向进化。量化标准避免主观判断。'},
+  {agent:'practice',thinking:'回应时间线讨论...',replyTo:{type:'dialogue',speaker:'发言人2',text:'串联流程单轮6-8周，2年课题期限内大概能做8-10轮',dialogueId:'d17'},text:'优化建议：<span class="em">pipeline化而非批次化</span>。不是完成100个骨架后才做AF3，而是每出10个骨架立即推进。将6-8周压缩到<span class="em">4-5周/轮</span>，2年可做12-15轮。'},
+  {agent:'literature',thinking:'文献溯源...',replyTo:null,text:'补充文献依据：Baker组2024 Nature Methods报道pipeline化策略将<span class="em">设计周期缩短40%</span>。关键是并行化各步骤——骨架生成(GPU)与实验验证(湿实验)可完全并行。'},
+  {agent:'experiment',thinking:'方案设计...',replyTo:{type:'agent',agentName:'落地评估'},text:'实验端pipeline设计：<span class="em">Week1</span>表达载体构建(Gibson assembly) → <span class="em">Week2</span>E.coli表达+纯化 → <span class="em">Week3</span>活性检测+CD验证。单批10个候选，3周出结果。'},
+  {agent:'critic',thinking:'分析pipeline风险...',replyTo:{type:'dialogue',speaker:'发言人2',text:'串联方案的关键风险在于单轮时间',dialogueId:'d20d'},text:'正确。串联pipeline的<span class="em">最大风险是bottleneck传导</span>：表达验证一旦卡住（常见），整条线停滞。建议设置<span class="em">2-3条平行pipeline</span>，不同靶标同时推进，一条卡住不影响全局。'},
+  {agent:'creative',thinking:'响应并行化建议...',replyTo:{type:'dialogue',speaker:'发言人1',text:'pipeline内部做并行——比如骨架生成和上一轮的定向进化同时进行',dialogueId:'d20e'},text:'发言人1的并行化思路可以更极端：<span class="em">「滚动进化」模式</span>——每周投入新骨架、同时进化上周的候选、同时检测上上周的结果。类似软件开发的CI/CD pipeline。恒定产出而非批次。'},
+  {agent:'summary',thinking:'更新汇总...',replyTo:null,text:'<span class="em">【更新方案】</span><br>1. 串联pipeline+滚动进化（4-5周/轮）<br>2. Exit criteria量化：pLDDT>85→ΔG<-5→>1mg/mL<br>3. LigandMPNN替代ProteinMPNN（2×成功率）<br>4. 计算端自动化：发言人4脚本化<br>5. 实验端集中：表达+检测（唯一人力瓶颈）<br>6. 首轮现实预期：25-30%（非40%）<br>7. IP确认：纯学术无碍，转化需FTO评估'},
+  {agent:'practice',thinking:'回应用户认同...',replyTo:{type:'dialogue',speaker:'发言人3',text:'归纳总结那边说的共识我基本认同。联合方案确定性高',dialogueId:'d20b'},text:'方案落地checklist：<span class="em">①本周</span>确认A100使用权 <span class="em">②下周</span>发言人4搭建RFdiffusion环境 <span class="em">③第三周</span>首批骨架生成 <span class="em">④第四周</span>AF3验证+排序 <span class="em">⑤第5-8周</span>表达验证首批top10。'}
+],"RFdiffusion":[
+  {agent:'explore',thinking:'解析技术原理...',replyTo:{type:'dialogue',speaker:'发言人2',text:'RFdiffusion和AF3其实是互补的',dialogueId:'d13'},text:'RFdiffusion核心：<span class="em">蛋白结构空间去噪扩散</span>，从噪声生成全新骨架。AF3预测已有结构，RFdiffusion创造新结构。RFdiffusion2增加功能约束。'},
+  {agent:'practice',thinking:'评估部署...',replyTo:{type:'dialogue',speaker:'发言人4',text:'A100单卡20分钟就能生成',dialogueId:'d14'},text:'实操：<span class="em">计算成本极低</span>，A100约20min/蛋白。全流程含ProteinMPNN+AF3验证约1-2周/轮。建议做"骨架图书馆"批量生成100+筛选top10。'},
+  {agent:'critic',thinking:'评估局限...',replyTo:{type:'dialogue',speaker:'发言人1',text:'活性位点设计上表现不好',dialogueId:'d15'},text:'确认：RFdiffusion<span class="em">酶活性位点成功率仅15%</span>（Kortemme组），低于AF3的25%。扩散模型对催化几何精确约束能力不足。不适合单独做酶设计。'},
+  {agent:'creative',thinking:'组合策略...',replyTo:{type:'research',stepName:'知识综合'},text:'策略：<span class="em">RFdiffusion做"骨架图书馆"</span>——批量100+骨架，AF3筛选top10，集中做活性优化。把多样性优势和精度优势组合。'},
+  {agent:'data',thinking:'数据审计...',replyTo:null,text:'数据核查：Baker组声称85%骨架成功率，但<span class="em">不同指标差异大</span>。pLDDT>85占比约60%，designability>0.7占比约45%。同时满足两者的约<span class="em">30%</span>。100个骨架预期得到30个合格候选。'},
+  {agent:'bridge',thinking:'跨学科联想...',replyTo:null,text:'跨领域视角：RFdiffusion的去噪扩散与<span class="em">图像生成(Stable Diffusion)</span>同源。图像领域的ControlNet技术或许可以迁移——用活性位点几何作为"control signal"引导骨架生成。这是RFdiff2的思路。'},
+  {agent:'explore',thinking:'分析RFdiffusion2...',replyTo:{type:'dialogue',speaker:'发言人2',text:'RFdiffusion2据说改进了约束生成能力',dialogueId:'d15b'},text:'RFdiffusion2 key upgrades：<span class="em">(1)催化残基空间约束</span> (2)配体结合口袋形状匹配 (3)多链复合物设计。预印本数据显示酶设计成功率<span class="em">15%→30-40%</span>，但仅1个实验室验证。'},
+  {agent:'practice',thinking:'回应骨架图书馆讨论...',replyTo:{type:'dialogue',speaker:'发言人4',text:'100个骨架也就2000分钟计算时间，约33小时',dialogueId:'d18d'},text:'计算排期建议：<span class="em">周一-周二</span>跑骨架生成(33h)，<span class="em">周三</span>AF3批量验证(100×5min=8h)，<span class="em">周四-周五</span>分析排序+ProteinMPNN。一周完成一轮全计算pipeline。'},
+  {agent:'critic',thinking:'评估批量策略的风险...',replyTo:{type:'agent',agentName:'落地评估'},text:'一周一轮的排期有个前提：<span class="em">GPU不能被占用</span>。如果实验室其他项目也在用A100，需要排队管理。建议设置<span class="em">自动化batch script</span>夜间跑，不占日间资源。'},
+  {agent:'practice',thinking:'资源管理方案...',replyTo:{type:'agent',agentName:'质疑挑战'},text:'好建议。具体方案：用<span class="em">SLURM job scheduler</span>设置夜间priority。骨架生成周一晚启动→周二晚完成→周三凌晨自动触发AF3验证。零人力等待。'},
+  {agent:'summary',thinking:'归纳定位...',replyTo:null,text:'<span class="em">【定位】</span>骨架多样性工具（非主路线）<br><span class="em">【用法】</span>批量100+→AF3筛top10(pLDDT>85+designability>0.7)→聚焦优化<br><span class="em">【计算排期】</span>自动化夜间跑，一周一轮<br><span class="em">【RFdiff2】</span>可期待但先benchmark 5酶验证<br><span class="em">【成本】</span>计算<500元/轮，瓶颈在实验端'},
+  {agent:'explore',thinking:'工具链完整性...',replyTo:null,text:'工具链总结：<span class="em">RFdiffusion</span>(骨架) → <span class="em">AF3</span>(结构验证) → <span class="em">LigandMPNN</span>(序列设计) → <span class="em">ESMFold</span>(快速二次验证) → <span class="em">ColabFold</span>(多状态验证)。全部开源可用，无需商业license。'},
+  {agent:'summary',thinking:'最终共识...',replyTo:null,text:'<span class="em">【执行共识】</span><br>1. RFdiffusion作前端骨架多样性引擎<br>2. 一周一轮全自动化计算（SLURM夜间）<br>3. 筛选标准：pLDDT>85 + designability>0.7<br>4. 工具链全开源：RFdiff→AF3→LigandMPNN→ESMFold<br>5. RFdiff2先做5酶benchmark，不盲目依赖<br>6. 新催化机制留后续课题，当前聚焦验证pipeline'}
+]};
+
+// ===== MEETING 2: AI Drug Discovery =====
+const dialogueData_drug=[
+  {speaker:"发言人1",color:"#7c3aed",text:"今天讨论我们的AI辅助药物发现pipeline，重点评审分子生成模型的选型和ADMET预测模块的可靠性。",id:"dr0"},
+  {speaker:"发言人2",color:"#0891b2",text:"我测试了三种主流的分子生成模型：REINVENT4、DrugEx v3和MolGPT。在我们JAK抑制剂项目上各有优劣。",id:"dr1"},
+  {speaker:"发言人3",color:"#dc2626",text:"临床转化角度看，生成的分子再新颖也得过ADMET关。我们上一轮有60%倒在毒性预测这步。",id:"dr2"},
+  {speaker:"发言人1",color:"#7c3aed",text:"所以这次要把ADMET预测前置。帮我调研下目前分子生成模型的最新进展，特别是带约束生成的方案。",trigger:"分子生成模型",id:"dr3"},
+  {speaker:"发言人2",color:"#0891b2",text:"REINVENT4的优势是可以加多目标约束，但生成多样性偏低。DrugEx的RL框架灵活性更好。",id:"dr4"},
+  {speaker:"发言人3",color:"#dc2626",text:"多样性不是越高越好。临床前阶段我更关心合成可及性和专利空间，太新奇的分子合成成本巨大。",id:"dr5"},
+  {speaker:"发言人1",color:"#7c3aed",text:"有道理。另外ADMET预测这块，我们现有模型的准确率不够。看看最新的ADMET预测方案有什么突破。",trigger:"ADMET预测",id:"dr6"},
+  {speaker:"发言人2",color:"#0891b2",text:"最近ADMET-AI和ADMETlab 3.0都发布了，号称在hERG毒性和CYP代谢预测上精度提升20%+。",id:"dr7"},
+  {speaker:"发言人3",color:"#dc2626",text:"hERG毒性预测如果真能提高，对我们意义很大。上一轮三个先导化合物就是倒在心脏毒性。",id:"dr8"},
+  {speaker:"发言人1",color:"#7c3aed",text:"好。总结下来，pipeline改进方向是：约束生成+前置ADMET筛选+合成可及性评分。下周给出具体方案。",id:"dr9"}
+];
+const keywordsToExtract_drug=[{text:"分子生成模型",triggerAt:3},{text:"ADMET预测",triggerAt:6}];
+const summaryVersions_drug=[{triggerAfter:0,blocks:[{icon:"target",color:"var(--accent-1)",title:"核心结论",tag:"最终",points:["Pipeline升级：约束生成→前置ADMET→合成可及性评分","分子生成选型：REINVENT4（稳定）+ DrugEx（探索）双轨","ADMET前置筛选替代后置验证，预计节省60%实验成本","hERG/CYP模型升级为ADMETlab 3.0","合成可及性评分引入SA Score + 逆合成路径验证"]},{icon:"check",color:"var(--accent-4)",title:"行动项",tag:"3项",points:["发言人2：一周内完成三模型在JAK数据集上的benchmark","发言人3：整理临床前失败分子特征用于negative set","发言人1：联系ADMETlab团队获取API access"]}]}];
+const researchData_drug={"分子生成模型":{steps:[{title:"制定计划",status:"completed",thinking:"聚焦约束生成方法论...",type:"plan",content:{directions:["约束生成架构对比","RL vs 扩散模型","多目标优化策略","合成可及性约束"]}},{title:"文献检索",status:"completed",thinking:"检索JCIM+Nature ML...",type:"citations",content:{total:35,selected:6,papers:[{journal:"Nat ML 2025",title:"REINVENT 4: multi-objective molecular generation",authors:"AstraZeneca",citations:189},{journal:"JCIM 2024",title:"DrugEx v3: RL-based drug design",authors:"Liu Group",citations:142},{journal:"Science 2025",title:"Diffusion models for 3D molecule generation",authors:"MIT",citations:267},{journal:"Nat Biotech 2024",title:"Constrained molecular optimization via GFlowNets",authors:"Bengio Lab",citations:203}]}},{title:"知识综合",status:"completed",thinking:"对比方案表现...",type:"comparison",content:{headers:["模型","多样性","约束控制","合成可及"],rows:[["REINVENT4","中","强(多目标)","SA内置"],["DrugEx v3","高","中(RL)","需外接"],["MolGPT","高","弱","无"],["DiffSBDD","极高","强(3D)","弱"]]}}]},"ADMET预测":{steps:[{title:"制定计划",status:"completed",thinking:"聚焦准确率提升...",type:"plan",content:{directions:["图神经网络改进","多任务学习","不确定性量化","临床数据回补"]}},{title:"文献检索",status:"completed",thinking:"检索近期发表...",type:"citations",content:{total:28,selected:5,papers:[{journal:"Nat Chem 2025",title:"ADMETlab 3.0: comprehensive ADMET prediction",authors:"Hou Group",citations:156},{journal:"JMC 2024",title:"ADMET-AI: uncertainty-aware predictions",authors:"MIT+Pfizer",citations:134},{journal:"Drug Disc Today 2025",title:"Graph transformers for CYP metabolism",authors:"Novartis",citations:89},{journal:"Toxicol Sci 2024",title:"Deep learning for hERG cardiotoxicity",authors:"FDA+NIH",citations:112}]}},{title:"知识综合",status:"completed",thinking:"对比方案...",type:"comparison",content:{headers:["工具","hERG准确率","CYP准确率","不确定性"],rows:[["ADMETlab 3.0","91%","87%","有"],["ADMET-AI","89%","85%","有(贝叶斯)"],["pkCSM","78%","74%","无"],["内部模型v2","82%","79%","无"]]}}]}};
+const agentDiscussions_drug={"分子生成模型":[
+  {agent:'explore',thinking:'分析生成模型技术栈...',replyTo:{type:'dialogue',speaker:'发言人1',text:'调研目前分子生成模型最新进展',dialogueId:'dr3'},text:'当前分子生成模型三大范式：<span class="em">自回归(MolGPT)、强化学习(REINVENT/DrugEx)、扩散模型(DiffSBDD)</span>。对于约束生成，RL系列最成熟；扩散模型潜力大但工程化不足。'},
+  {agent:'critic',thinking:'评估实用性...',replyTo:{type:'dialogue',speaker:'发言人3',text:'太新奇的分子合成成本巨大',dialogueId:'dr5'},text:'同意。<span class="em">合成可及性应作为硬约束而非软目标</span>。REINVENT4内置SA Score，DrugEx需额外集成逆合成模型（如AiZynthFinder）。实际部署成本差异大。'},
+  {agent:'practice',thinking:'评估落地方案...',replyTo:null,text:'推荐<span class="em">双轨策略</span>：REINVENT4作为主生产线（稳定出分子），DrugEx做探索性生成（覆盖新骨架）。两者互补，月产1000+候选分子。'},
+  {agent:'creative',thinking:'跨领域联想...',replyTo:null,text:'新思路：用<span class="em">GFlowNets替代传统RL</span>做多目标优化。Bengio组证明GFlowNets采样多样性远超PPO，且天然支持多模式分布。适合同时优化活性+ADMET+合成性。'}
+],"ADMET预测":[
+  {agent:'explore',thinking:'分析ADMET工具进展...',replyTo:{type:'dialogue',speaker:'发言人2',text:'ADMET-AI和ADMETlab 3.0都发布了',dialogueId:'dr7'},text:'ADMETlab 3.0关键升级：<span class="em">图Transformer架构</span>替换传统GNN，在hERG/CYP/BBB三项上刷新SOTA。API已开放学术调用。'},
+  {agent:'critic',thinking:'审视模型局限...',replyTo:{type:'dialogue',speaker:'发言人3',text:'三个先导化合物就是倒在心脏毒性',dialogueId:'dr8'},text:'注意：<span class="em">公开模型训练集与我们靶标域可能存在分布偏移</span>。建议用上轮失败分子做domain-specific fine-tuning，预计可额外提升5-8%准确率。'},
+  {agent:'practice',thinking:'设计集成方案...',replyTo:null,text:'实操方案：<span class="em">①ADMET前置漏斗</span>（生成→立即筛）<span class="em">②不确定性阈值</span>（UQ>0.3的送人工审查）<span class="em">③反馈闭环</span>（实验结果回补模型）。预计节省60%无效合成。'},
+  {agent:'summary',thinking:'归纳共识...',replyTo:null,text:'<span class="em">【共识】</span>ADMET前置化是核心改进方向<br><span class="em">【工具】</span>ADMETlab 3.0 + domain fine-tune<br><span class="em">【策略】</span>不确定性驱动的人机协作筛选<br><span class="em">【预期】</span>先导化合物临床前通过率40%→65%'}
+]};
+const topicAgentMap_drug={
+  '分子生成模型':{wave1:{agents:['explore','critic','practice','creative'],trigger:'initial',msgRange:[0,3]}},
+  'ADMET预测':{wave1:{agents:['explore','critic','practice','summary'],trigger:'initial',msgRange:[0,3]}}
+};
+
+// ===== MEETING 3: Climate Model =====
+const dialogueData_climate=[
+  {speaker:"发言人1",color:"#0369a1",text:"今天讨论大气-海洋耦合模型的多尺度方案。目前我们的全球模式在热带太平洋区域温度偏差系统性偏大。",id:"cl0"},
+  {speaker:"发言人2",color:"#15803d",text:"海洋模块的MOM6边界层参数化方案可能有问题。我对比了ERA5再分析数据，混合层深度冬季偏浅20%。",id:"cl1"},
+  {speaker:"发言人3",color:"#b45309",text:"数值层面，现在耦合频率是3小时交换一次。对于中尺度涡旋的快速过程来说可能太粗了。",id:"cl2"},
+  {speaker:"发言人1",color:"#0369a1",text:"耦合频率确实是个关键问题。帮我调研下耦合频率优化的最新方案，看看别的模式中心怎么处理的。",trigger:"耦合频率优化",id:"cl3"},
+  {speaker:"发言人2",color:"#15803d",text:"CESM3已经改用自适应耦合了，风暴区域1小时甚至更短。不过计算开销增加了40%。",id:"cl4"},
+  {speaker:"发言人3",color:"#b45309",text:"40%开销增加太大了。我们超算配额本来就紧张，100年积分要跑两个月。",id:"cl5"},
+  {speaker:"发言人1",color:"#0369a1",text:"所以需要在精度和开销之间找平衡。另外参数化方案本身也要改进。看看物理参数化的最新进展。",trigger:"物理参数化",id:"cl6"},
+  {speaker:"发言人2",color:"#15803d",text:"ML参数化现在很火，NCAR用神经网络替换了对流参数化，偏差减小了一半。",id:"cl7"},
+  {speaker:"发言人3",color:"#b45309",text:"但ML参数化的物理一致性和能量守恒没法保证。长期积分可能发散。",id:"cl8"},
+  {speaker:"发言人1",color:"#0369a1",text:"对，稳定性是硬约束。折中方案是物理约束的混合参数化——用ML修正传统方案而非替换。下一步细化方案。",id:"cl9"}
+];
+const keywordsToExtract_climate=[{text:"耦合频率优化",triggerAt:3},{text:"物理参数化",triggerAt:6}];
+const summaryVersions_climate=[{triggerAfter:0,blocks:[{icon:"target",color:"var(--accent-1)",title:"核心结论",tag:"最终",points:["热带太平洋偏差源于：耦合频率过粗+混合层参数化偏差","耦合频率方案：区域自适应（热带1h，中纬度3h）","参数化升级：物理约束混合方案（ML修正而非替换）","能量守恒作为硬约束验证条件"]},{icon:"check",color:"var(--accent-4)",title:"行动项",tag:"3项",points:["发言人2：实现区域自适应耦合模块（2周）","发言人3：benchmark计算开销对比（固定 vs 自适应）","发言人1：联系NCAR获取混合参数化参考代码"]}]}];
+const researchData_climate={"耦合频率优化":{steps:[{title:"制定计划",status:"completed",thinking:"聚焦耦合策略...",type:"plan",content:{directions:["固定频率 vs 自适应频率","区域差异化策略","计算开销权衡","能量守恒约束"]}},{title:"文献检索",status:"completed",thinking:"检索GMD+JAMES...",type:"citations",content:{total:22,selected:5,papers:[{journal:"JAMES 2025",title:"Adaptive ocean-atmosphere coupling in CESM3",authors:"NCAR",citations:87},{journal:"GMD 2024",title:"Scale-aware coupling for tropical variability",authors:"ECMWF",citations:63},{journal:"J Climate 2025",title:"High-frequency coupling and ENSO simulation",authors:"GFDL",citations:95},{journal:"Ocean Modelling 2024",title:"Submesoscale-atmosphere interaction at 1/12°",authors:"CNRM",citations:45}]}},{title:"知识综合",status:"completed",thinking:"对比方案...",type:"comparison",content:{headers:["方案","精度提升","开销增加","稳定性"],rows:[["固定1h","15%","40%","高"],["固定30min","22%","120%","高"],["自适应(动态)","18%","15-25%","中高"],["区域分区","16%","20%","高"]]}}]},"物理参数化":{steps:[{title:"制定计划",status:"completed",thinking:"聚焦ML与物理结合...",type:"plan",content:{directions:["传统参数化局限","纯ML替换方案","物理约束ML混合","长期积分稳定性"]}},{title:"文献检索",status:"completed",thinking:"检索最新论文...",type:"citations",content:{total:30,selected:5,papers:[{journal:"Nature 2024",title:"Machine learning for climate model parameterization",authors:"Schneider et al.",citations:312},{journal:"JAMES 2025",title:"Physics-constrained neural network convection",authors:"NCAR+Stanford",citations:134},{journal:"GMD 2024",title:"Hybrid parameterization with energy conservation",authors:"MPI-M",citations:89},{journal:"PNAS 2025",title:"Stable ML closures for turbulence",authors:"Caltech",citations:156}]}},{title:"知识综合",status:"completed",thinking:"对比方案...",type:"comparison",content:{headers:["方案","偏差改善","守恒性","可解释性"],rows:[["传统KE","基准","完美","高"],["纯ML替换","50%","差","低"],["ML修正项","35%","良好","中"],["物理约束ML","40%","优秀","中高"]]}}]}};
+const agentDiscussions_climate={"耦合频率优化":[
+  {agent:'explore',thinking:'调研耦合方案...',replyTo:{type:'dialogue',speaker:'发言人1',text:'调研下耦合频率优化的最新方案',dialogueId:'cl3'},text:'三大模式中心方案对比：<span class="em">CESM3自适应耦合</span>（风暴区域1h）、<span class="em">ECMWF尺度感知方案</span>（按网格雷诺数动态调整）、<span class="em">GFDL高频固定方案</span>（全域1h）。'},
+  {agent:'critic',thinking:'评估可行性...',replyTo:{type:'dialogue',speaker:'发言人3',text:'40%开销增加太大了',dialogueId:'cl5'},text:'同意，全域高频不可接受。但<span class="em">区域分区是低成本妥协</span>：热带1h+中纬度3h+极地6h，开销增加仅15-20%，热带偏差改善可达16%。'},
+  {agent:'practice',thinking:'实施方案...',replyTo:null,text:'技术实现路径：利用OASIS3-MCT耦合器的<span class="em">multi-rate功能</span>，不同区域设不同交换频率。MOM6侧需要修改coupling_nml的区域mask。代码改动量约500行。'},
+  {agent:'data',thinking:'数据审计...',replyTo:null,text:'验证数据需求：<span class="em">ERA5 hourly</span>做参考（1979-2023），比较Niño3.4区SST偏差。建议跑20年spin-up + 30年诊断，总计~8万核时。'}
+],"物理参数化":[
+  {agent:'explore',thinking:'分析ML参数化...',replyTo:{type:'dialogue',speaker:'发言人2',text:'NCAR用神经网络替换了对流参数化',dialogueId:'cl7'},text:'NCAR方案(Yuval & O\'Gorman 2023)：用<span class="em">随机森林+残差网络</span>学习对流倾向。关键是训练集用cloud-resolving simulation生成。偏差-50%但长期漂移严重。'},
+  {agent:'critic',thinking:'评估稳定性...',replyTo:{type:'dialogue',speaker:'发言人3',text:'ML参数化的物理一致性和能量守恒没法保证',dialogueId:'cl8'},text:'关键约束：<span class="em">能量守恒 + 正定性 + 因果性</span>。MPI-M的方案在loss函数里加守恒惩罚项，1000年积分无发散。这是必须遵循的思路。'},
+  {agent:'practice',thinking:'实施建议...',replyTo:null,text:'建议<span class="em">混合方案</span>：保留ZM对流方案主体框架，用小型NN(3层×64)学习修正项δQ,δT。修正幅度clip到±30%以内。物理框架保证守恒，ML只做微调。'},
+  {agent:'summary',thinking:'归纳...',replyTo:null,text:'<span class="em">【方案】</span>物理约束混合参数化（ML修正而非替换）<br><span class="em">【架构】</span>ZM框架 + NN修正项(clip±30%)<br><span class="em">【训练】</span>CRM数据集 + 守恒惩罚loss<br><span class="em">【验证】</span>100年积分无漂移 + 热带偏差改善35%+'}
+]};
+const topicAgentMap_climate={
+  '耦合频率优化':{wave1:{agents:['explore','critic','practice','data'],trigger:'initial',msgRange:[0,3]}},
+  '物理参数化':{wave1:{agents:['explore','critic','practice','summary'],trigger:'initial',msgRange:[0,3]}}
+};
+
+// ===== MEETING DATA REGISTRY =====
+const meetingRegistry={
+  enzyme:{title:'酶设计技术路线讨论',dialogue:dialogueData,keywords:keywordsToExtract,summary:summaryVersions,research:researchData,agents:agentDiscussions,topicMap:topicAgentMap,status:'current'},
+  drug:{title:'AI药物发现pipeline评审',dialogue:dialogueData_drug,keywords:keywordsToExtract_drug,summary:summaryVersions_drug,research:researchData_drug,agents:agentDiscussions_drug,topicMap:topicAgentMap_drug,status:'ended'},
+  climate:{title:'气候模型多尺度耦合方案',dialogue:dialogueData_climate,keywords:keywordsToExtract_climate,summary:summaryVersions_climate,research:researchData_climate,agents:agentDiscussions_climate,topicMap:topicAgentMap_climate,status:'ended'}
+};
+let currentMeetingId='enzyme';
+
+// ===== STATE =====
+let isRunning=false,isPaused=false,seconds=0,timerInterval=null,dialogueIndex=0,charInterval=null;
+let extractedKeywords=[],currentKeyword=null,keywordExtractQueue=[...keywordsToExtract];
+let researchStarted={},agentStarted={};
+
+// ===== DORMANT GRID (12 agents) =====
+function renderDormantGrid(){
+  const grid=document.getElementById('dormantGrid');
+  grid.innerHTML='';
+  allAgents.forEach((a,i)=>{
+    const el=document.createElement('div');
+    el.className='dormant-agent';
+    el.dataset.agent=a.id;
+    el.dataset.state=a.dormant;
+    el.innerHTML=`<div class="dormant-avatar" style="animation-delay:${i*0.5}s"><img data-avatar-agent="${a.id}" src="${getAvatarUrl(a.id)}"></div><span class="dormant-name">${a.name}</span><span class="dormant-status">${a.dormantLabel}</span>`;
+    grid.appendChild(el);
+  });
+  const conn=document.createElement('svg');conn.className='dormant-connector';conn.setAttribute('viewBox','0 0 400 300');
+  conn.innerHTML=`<line x1="50" y1="50" x2="150" y2="50" style="animation-delay:0s"/><line x1="150" y1="50" x2="250" y2="50" style="animation-delay:1.2s"/><line x1="250" y1="50" x2="350" y2="50" style="animation-delay:0.6s"/><line x1="50" y1="150" x2="150" y2="150" style="animation-delay:2.4s"/><line x1="150" y1="150" x2="250" y2="150" style="animation-delay:0.8s"/><line x1="250" y1="150" x2="350" y2="150" style="animation-delay:1.8s"/><line x1="50" y1="250" x2="150" y2="250" style="animation-delay:3s"/><line x1="150" y1="250" x2="250" y2="250" style="animation-delay:2s"/><line x1="50" y1="50" x2="50" y2="150" style="animation-delay:1.6s"/><line x1="150" y1="50" x2="150" y2="150" style="animation-delay:2.8s"/><line x1="250" y1="50" x2="250" y2="150" style="animation-delay:3.4s"/><line x1="350" y1="50" x2="350" y2="150" style="animation-delay:0.4s"/><line x1="50" y1="50" x2="350" y2="250" style="animation-delay:3.8s"/><line x1="350" y1="50" x2="50" y2="250" style="animation-delay:4.2s"/>`;
+  grid.appendChild(conn);
+}
+renderDormantGrid();
+
+// Theme
+document.querySelectorAll('.theme-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.documentElement.setAttribute('data-theme',btn.dataset.t);});});
+
+// Timer
+function updateTimer(){if(!isPaused){seconds++;document.getElementById('duration').textContent=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');}}
+
+// Controls
+document.getElementById('btnStart').addEventListener('click',startMeeting);
+document.getElementById('btnPause').addEventListener('click',()=>{isPaused=!isPaused;document.getElementById('btnPause').textContent=isPaused?'继续':'暂停';document.getElementById('recBadge').classList.toggle('active',!isPaused);});
+document.getElementById('btnStop').addEventListener('click',endMeeting);
+
+function startMeeting(){
+  isRunning=true;
+  document.getElementById('btnStart').style.display='none';
+  document.getElementById('btnPause').disabled=false;
+  document.getElementById('btnStop').disabled=false;
+  document.getElementById('recBadge').classList.add('active');
+  document.getElementById('dialogueBadge').textContent='收录中';
+  const ed=document.getElementById('emptyDialogue');if(ed)ed.remove();
+  const es=document.getElementById('emptySummary');if(es)es.remove();
+  timerInterval=setInterval(updateTimer,1000);
+  // Show host bar
+  document.getElementById('hostBar').classList.add('active');
+  hostSetStatus('准备中...');
+  // 小D拟人化开场白（先于对话）
+  hostGreeting();
+  setTimeout(()=>{streamDialogue();scheduleSummary();},sd(1200));
+}
+function endMeeting(){
+  isRunning=false;clearInterval(timerInterval);
+  document.getElementById('btnPause').disabled=true;
+  document.getElementById('btnStop').disabled=true;
+  document.getElementById('recBadge').classList.remove('active');
+  document.getElementById('dialogueBadge').textContent='已结束';
+  document.getElementById('btnReport').disabled=false;
+  hostSetStatus('会议已结束');
+  setHostAnim('idle');
+  hostLog('会议结束，生成报告中...');
+}
+
+// ===== 小D HOST FUNCTIONS =====
+const hostVideos={idle:'小D/videos/idle.mp4',waving:'小D/videos/waving.mp4',running:'小D/videos/running.mp4',review:'小D/videos/review.mp4',jumping:'小D/videos/jumping.mp4',waiting:'小D/videos/waiting.mp4',failed:'小D/videos/failed.mp4'};
+function setHostAnim(state){
+  const v=document.getElementById('hostVideo');if(!v)return;
+  const src=hostVideos[state]||hostVideos.idle;
+  if(v.src.includes(src.split('/').pop()))return;
+  v.src=src;v.load();v.play();
+}
+function hostLog(text){
+  const log=document.getElementById('hostLog');
+  const timeStr=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');
+  const entry=document.createElement('div');
+  entry.className='host-log-entry';
+  entry.innerHTML=`<span class="log-time">${timeStr}</span><span class="log-text">${text}</span>`;
+  log.prepend(entry);
+}
+function hostSetStatus(text){
+  document.getElementById('hostStatus').textContent=text;
+}
+function insertAssistantMsg(text){
+  const list=document.getElementById('dialogueList');
+  const item=document.createElement('div');item.className='dialogue-item assistant';
+  item.innerHTML=`<div class="assistant-avatar"><video src="小D/videos/idle.mp4" autoplay loop muted playsinline></video></div><div class="dialogue-content"><div class="assistant-name">会议助手 · 小D</div><div class="dialogue-text">${text}</div></div>`;
+  list.appendChild(item);
+  list.scrollTop=list.scrollHeight;
+}
+function hostGreeting(){
+  insertAssistantMsg('大家好，我是会议助手小D。会议已开始录制，我会实时关注讨论内容，发现有价值的议题后自动启动深度研究，并组织AI智能体加入讨论。会议结束后将自动生成完整的会议报告。请畅所欲言～');
+}
+
+function hostExtractTopic(kwText){
+  setHostAnim('jumping');
+  hostSetStatus('发现新主题');
+  hostLog(`提取主题：「${kwText}」`);
+  setTimeout(()=>{
+    setHostAnim('review');
+    hostLog(`启动深度研究：${kwText}`);
+    hostSetStatus('深度研究中');
+    startResearchPaced(kwText);
+  },sd(2500));
+  // Wave-based agent invitations
+  setTimeout(()=>inviteWave(kwText,'wave1'),sd(6000));
+}
+
+function inviteWave(kw,waveName){
+  const map=topicAgentMap[kw];if(!map||!map[waveName])return;
+  const wave=map[waveName];
+  const agents=wave.agents.map(id=>allAgents.find(a=>a.id===id)).filter(Boolean);
+  const uniqueNames=[...new Set(agents.map(a=>a.name))];
+  setHostAnim('running');
+  hostLog(`${uniqueNames.slice(0,3).join('、')} 加入讨论`);
+  hostSetStatus('组织讨论');
+  document.getElementById('agentModeLabel').textContent='圆桌研讨';
+  awakenSelectedAgents(kw,agents);
+  setTimeout(()=>startAgentWave(kw,waveName),sd(3000));
+}
+
+function selectAgentsForTopic(kw){
+  const map=topicAgentMap[kw];if(!map)return allAgents.slice(0,3);
+  const allIds=[...new Set(Object.values(map).flatMap(w=>w.agents))];
+  return allIds.map(id=>allAgents.find(a=>a.id===id)).filter(Boolean);
+}
+
+// ===== DIALOGUE =====
+function streamDialogue(){
+  if(!isRunning||dialogueIndex>=dialogueData.length)return;
+  const msg=dialogueData[dialogueIndex];
+  const item=document.createElement('div');item.className='dialogue-item';item.dataset.id=msg.id;
+  item.innerHTML=`<div class="speaker-avatar" style="background:${msg.color}">${msg.speaker[0]}</div><div class="dialogue-content"><div class="speaker-name">${msg.speaker}</div><div class="dialogue-text"><span class="tc"></span><span class="typing-cursor"></span></div></div>`;
+  const list=document.getElementById('dialogueList');list.appendChild(item);list.scrollTop=list.scrollHeight;
+  const el=item.querySelector('.tc'),cur=item.querySelector('.typing-cursor');
+  let ci=0;const text=msg.text;const idx=dialogueIndex;
+  charInterval=setInterval(()=>{
+    if(isPaused)return;
+    if(ci<text.length){el.textContent+=text[ci++];list.scrollTop=list.scrollHeight;}
+    else{
+      clearInterval(charInterval);cur.remove();
+      if(msg.trigger)el.innerHTML=text.replace(msg.trigger,`<span class="trigger-kw">${msg.trigger}</span>`);
+      if(msg.agentRef){
+        const agent=allAgents.find(a=>a.id===msg.agentRef.agent);
+        if(agent){
+          const refCard=document.createElement('div');refCard.className='ref-card';
+          refCard.innerHTML=`<img class="ref-avatar" data-avatar-agent="${agent.id}" src="${getAvatarUrl(agent.id)}"><span class="ref-name">${agent.name}</span><span class="ref-tag">${msg.agentRef.keyword.slice(0,8)}</span><span class="ref-text">"${msg.agentRef.text.slice(0,35)}..."</span>`;
+          refCard.addEventListener('click',()=>{
+            selectKeyword(msg.agentRef.keyword);
+            setTimeout(()=>{
+              const agMsgs=document.querySelectorAll(`.agent-discussion-group[data-kw="${msg.agentRef.keyword}"] .agent-msg`);
+              const target=agMsgs[msg.agentRef.msgIdx];
+              if(target){target.classList.add('highlighted');target.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>target.classList.remove('highlighted'),3000);}
+            },200);
+          });
+          item.querySelector('.dialogue-content').appendChild(refCard);
+        }
+      }
+      checkKeywordExtraction(idx);dialogueIndex++;
+      setTimeout(streamDialogue,sd(4500+Math.random()*2000));
+    }
+  },sd(48));
+}
+
+// ===== KEYWORDS =====
+function checkKeywordExtraction(idx){
+  const kw=keywordExtractQueue.find(k=>k.triggerAt===idx);
+  if(kw){
+    keywordExtractQueue=keywordExtractQueue.filter(k=>k!==kw);
+    setTimeout(()=>extractKeyword(kw),sd(1500));
+  }
+}
+function extractKeyword(kwData){
+  extractedKeywords.push(kwData.text);
+  renderKeywords();
+  if(extractedKeywords.length===1){
+    const er=document.getElementById('emptyResearch');if(er)er.remove();
+    setTimeout(()=>selectKeyword(kwData.text),sd(800));
+  }
+  hostExtractTopic(kwData.text);
+}
+function renderKeywords(){
+  const bar=document.getElementById('keywordsBar');
+  bar.innerHTML='<span class="keywords-bar-label">主题</span>';
+  extractedKeywords.forEach(kw=>{
+    const chip=document.createElement('div');chip.className='keyword-chip'+(kw===currentKeyword?' active':'');
+    const st=researchStarted[kw]==='done'?'completed':researchStarted[kw]?'researching':'';
+    chip.innerHTML=`<span class="keyword-status ${st}"></span>${kw}`;
+    chip.addEventListener('click',()=>selectKeyword(kw));bar.appendChild(chip);
+  });
+}
+function selectKeyword(kw){
+  currentKeyword=kw;renderKeywords();document.querySelectorAll('.research-kw-group').forEach(g=>g.classList.remove('visible'));
+  const rg=document.querySelector(`.research-kw-group[data-kw="${kw}"]`);if(rg)rg.classList.add('visible');
+  document.querySelectorAll('.agent-discussion-group').forEach(g=>g.classList.remove('visible'));
+  const ag=document.querySelector(`.agent-discussion-group[data-kw="${kw}"]`);
+  if(ag)ag.classList.add('visible');
+  document.getElementById('agentStatus').textContent=kw;
+}
+
+// ===== RESEARCH (Paced by 小D) =====
+const kwShortName={'CRISPR-Cas蛋白工程':'CRISPR','蛋白质从头设计':'从头设计','RFdiffusion':'扩散模型'};
+function startResearchPaced(kw){
+  if(researchStarted[kw])return;
+  researchStarted[kw]='running';renderKeywords();const area=document.getElementById('researchArea');
+  const group=document.createElement('div');group.className='research-kw-group'+(kw===currentKeyword?' visible':'');group.dataset.kw=kw;
+  area.appendChild(group);
+  const data=researchData[kw];if(!data)return;
+  const tl=document.createElement('div');tl.className='step-timeline';group.appendChild(tl);
+  data.steps.forEach((step,i)=>{
+    setTimeout(()=>{
+      if(kw===currentKeyword)hostSetStatus(`研究：${step.title}`);
+      hostLog(`${kwShortName[kw]||kw} · ${step.title}`);
+      renderStep(tl,step,i+1);
+      if(kw===currentKeyword)area.scrollTop=area.scrollHeight;
+      if(i===data.steps.length-1){
+        setTimeout(()=>{
+          researchStarted[kw]='done';
+          renderKeywords();hostLog(`${kwShortName[kw]||kw} · 研究完成`);
+          if(kw===currentKeyword)hostSetStatus('研究完成');
+        },sd(2000));
+      }
+    },sd(4000*i));
+  });
+}
+function renderStep(c,step,num){
+  const item=document.createElement('div');item.className='step-item';
+  const dc=step.status==='completed'?'completed':step.status==='active'?'active':'pending';
+  const sl=step.status==='completed'?'已完成':step.status==='active'?'进行中':'等待中';
+  let th=step.thinking?`<div class="step-thinking">${step.thinking}</div>`:'';
+  let ct=step.content?`<div class="step-content">${renderContent(step)}</div>`:'';
+  item.innerHTML=`<div class="step-dot ${dc}">${num}</div><div class="step-header"><span class="step-title">${step.title}</span><span class="step-status ${step.status}">${sl}</span></div>${th}${ct}`;
+  c.appendChild(item);
+}
+function renderContent(step){
+  const c=step.content;if(!c)return'';
+  switch(step.type){
+    case 'plan':return`<div class="plan-directions">${c.directions.map((d,i)=>`<div class="plan-direction"><span class="plan-num">${i+1}</span>${d}</div>`).join('')}</div>`;
+    case 'citations':return`<div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">检索${c.total}篇，精选${c.selected}篇</div><div class="citation-grid">${c.papers.map(p=>`<div class="citation-card"><div class="citation-journal">${p.journal}</div><div class="citation-title">${p.title}</div><div class="citation-meta"><span>${p.authors}</span><span>引用${p.citations}</span></div></div>`).join('')}</div>`;
+    case 'knowledge_graph':return`<div style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;line-height:1.5">${c.findings}</div><div class="knowledge-graph"><svg viewBox="0 0 500 220">${c.edges.map(e=>{const f=c.nodes.find(n=>n.id===e.from),t=c.nodes.find(n=>n.id===e.to);return f&&t?`<line class="kg-link" x1="${f.x}" y1="${f.y}" x2="${t.x}" y2="${t.y}"/>`:'';}).join('')}${c.nodes.map(n=>{const cl=n.type==='method'?'var(--accent-1)':n.type==='tech'?'var(--accent-2)':n.type==='app'?'var(--accent-4)':'var(--accent-5)';return`<g class="kg-node"><circle cx="${n.x}" cy="${n.y}" r="16" fill="${cl}" opacity="0.85"/><text x="${n.x}" y="${n.y+3}" fill="white" font-size="7.5" font-weight="500" text-anchor="middle">${n.id}</text></g>`;}).join('')}</svg></div>`;
+    case 'comparison':return`<table class="comparison-table"><thead><tr>${c.headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${c.rows.map(r=>`<tr>${r.map(d=>`<td>${d}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+    case 'timeline':return`<div class="full-timeline">${c.nodes.map(n=>`<div class="timeline-node ${n.milestone?'milestone':''} ${n.future?'future':''}"><span class="timeline-year">${n.year}</span><div class="timeline-event">${n.event}</div></div>`).join('')}</div>`;
+    case 'credibility':return`<div class="credibility-chart">${c.sources.map(s=>`<div class="cred-row"><span class="cred-label">${s.label}</span><div class="cred-bar-bg"><div class="cred-bar ${s.level}" style="width:${s.value}%"><span class="cred-value">${s.value}%</span></div></div></div>`).join('')}</div>`;
+    default:return'';
+  }
+}
+
+// ===== SUMMARY =====
+function scheduleSummary(){[20000,55000,100000,160000].forEach((d,i)=>{if(i<summaryVersions.length)setTimeout(()=>{if(!isRunning)return;renderSummary(summaryVersions[i]);},sd(d));});}
+const sbIcons={target:'<svg viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2.5"/></svg>',zap:'<svg viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.5"><path d="M9 1.5L3 9.5h5l-1 5.5 6-8h-5l1-5.5z"/></svg>',check:'<svg viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.5"><path d="M3.5 8.5l3 3 6-6.5"/></svg>',alert:'<svg viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.5"><path d="M8 5v4M8 11h.01"/><circle cx="8" cy="8" r="6"/></svg>'};
+function renderSummary(ver){const ct=document.getElementById('summaryContent');ct.innerHTML='';ver.blocks.forEach(b=>{const el=document.createElement('div');el.className='summary-block';el.innerHTML=`<div class="summary-block-header"><div class="sb-icon" style="background:${b.color}">${sbIcons[b.icon]||sbIcons.target}</div><span class="summary-block-title">${b.title}</span><span class="summary-block-tag">${b.tag}</span></div><div class="summary-points">${b.points.map(p=>`<div class="summary-point">${p}</div>`).join('')}</div>`;ct.appendChild(el);});ct.scrollTop=ct.scrollHeight;}
+
+// ===== DORMANT AWAKENING (小D invites specific agents) =====
+function awakenSelectedAgents(kw,invited){
+  const dormants=document.querySelectorAll('#dormantGrid .dormant-agent');
+  const invitedIds=invited.map(a=>a.id);
+  invitedIds.forEach((agId,i)=>{
+    const el=[...dormants].find(d=>d.dataset.agent===agId);if(!el)return;
+    setTimeout(()=>{el.classList.add('awakening');el.querySelector('.dormant-status').textContent='激活中...';},sd(800+i*600));
+    setTimeout(()=>{el.classList.remove('awakening');el.classList.add('awake');el.querySelector('.dormant-status').textContent='已就绪';},sd(1800+i*600));
+  });
+}
+
+// ===== AGENT DISCUSSION (Wave-based, 小D controls) =====
+function startAgentWave(kw,waveName){
+  const map=topicAgentMap[kw];if(!map||!map[waveName])return;
+  const wave=map[waveName];
+  const discussion=agentDiscussions[kw];if(!discussion)return;
+  const msgs=discussion.slice(wave.msgRange[0],wave.msgRange[1]+1);
+  // Ensure group container exists
+  const chatEl=document.getElementById('agentChat');
+  let group=chatEl.querySelector(`.agent-discussion-group[data-kw="${kw}"]`);
+  if(!group){
+    const emptyA=document.getElementById('emptyAgents');if(emptyA)emptyA.style.display='none';
+    group=document.createElement('div');group.className='agent-discussion-group'+(kw===currentKeyword?' visible':'');group.dataset.kw=kw;
+    chatEl.appendChild(group);
+  }
+  // Render invitation divider
+  const divider=document.createElement('div');divider.className='agent-wave-divider';
+  const uniqueNames=[...new Set(msgs.map(m=>{const a=allAgents.find(x=>x.id===m.agent);return a?a.name:''}).filter(Boolean))];
+  divider.innerHTML=`<span class="wave-divider-line"></span><span class="wave-divider-text">${uniqueNames.slice(0,3).join('、')} 加入讨论</span><span class="wave-divider-line"></span>`;
+  group.appendChild(divider);
+  if(kw===currentKeyword)chatEl.scrollTop=chatEl.scrollHeight;
+  // Render messages for this wave
+  const globalOffset=wave.msgRange[0];
+  renderAgentMessages(group,msgs,kw,chatEl,globalOffset);
+  setHostAnim('waiting');
+  hostSetStatus('讨论进行中');
+  // Schedule next wave
+  const waves=Object.keys(map);
+  const nextIdx=waves.indexOf(waveName)+1;
+  if(nextIdx<waves.length){
+    const nextWave=waves[nextIdx];
+    const delay=msgs.length*6000+8000;
+    setTimeout(()=>inviteWave(kw,nextWave),sd(delay));
+  }else{
+    const delay=msgs.length*6000+3000;
+    setTimeout(()=>{hostSetStatus('讨论告一段落');hostLog(`${kwShortName[kw]||kw} · 讨论完成`);},sd(delay));
+  }
+}
+function renderAgentMessages(group,msgs,kw,chatEl,offset){
+  offset=offset||0;
+  msgs.forEach((msg,i)=>{
+    const agent=allAgents.find(a=>a.id===msg.agent);
+    if(!agent)return;
+    const globalIdx=offset+i;
+    const baseDelay=sd(6000*i);
+    setTimeout(()=>{
+      if(!isRunning&&globalIdx>5)return;
+      const msgEl=document.createElement('div');msgEl.className='agent-msg';msgEl.id=`amsg-${kw.replace(/[^a-z0-9]/gi,'')}-${globalIdx}`;
+      const avatarEl=document.createElement('div');avatarEl.className='agent-avatar speaking';
+      avatarEl.innerHTML=`<img data-avatar-agent="${agent.id}" src="${getAvatarUrl(agent.id)}">`;
+      const bubbleEl=document.createElement('div');bubbleEl.className='agent-bubble';
+      let replyHtml=buildReplyRef(msg,kw);
+      const textClass=agent.id==='summary'?' summary-style':'';
+      bubbleEl.innerHTML=`<div class="agent-name" style="color:${agent.color}">${agent.name} <span class="agent-role">${agent.role}</span></div>${replyHtml}<div class="agent-text${textClass}"><span class="agent-thinking-text">${msg.thinking} <span class="thinking-dots"><span></span><span></span><span></span></span></span></div>`;
+      msgEl.appendChild(avatarEl);msgEl.appendChild(bubbleEl);group.appendChild(msgEl);
+      if(kw===currentKeyword)chatEl.scrollTop=chatEl.scrollHeight;
+      if(msg.replyTo&&msg.replyTo.type==='dialogue'&&msg.replyTo.dialogueId){
+        const dItem=document.querySelector(`.dialogue-item[data-id="${msg.replyTo.dialogueId}"]`);
+        if(dItem){dItem.classList.add('highlighted');setTimeout(()=>dItem.classList.remove('highlighted'),3000);}
+      }
+    },baseDelay+sd(800));
+
+    setTimeout(()=>{
+      if(!isRunning&&globalIdx>5)return;
+      const msgEl=document.getElementById(`amsg-${kw.replace(/[^a-z0-9]/gi,'')}-${globalIdx}`);if(!msgEl)return;
+      const avatarEl=msgEl.querySelector('.agent-avatar');
+      const textEl=msgEl.querySelector('.agent-text');textEl.innerHTML='';
+      const tokens=tokenize(msg.text);let wi=0;
+      avatarEl.classList.add('speaking');
+      const wInt=setInterval(()=>{
+        if(wi<tokens.length){textEl.innerHTML+=tokens[wi];wi++;if(kw===currentKeyword)chatEl.scrollTop=chatEl.scrollHeight;}
+        else{clearInterval(wInt);avatarEl.classList.remove('speaking');}
+      },sd(35));
+    },baseDelay+sd(3800));
+  });
+}
+
+function buildReplyRef(msg,kw){
+  const rt=msg.replyTo;if(!rt)return'';
+  if(rt.type==='dialogue'){
+    return`<div class="ref-card" onclick="highlightDialogue('${rt.dialogueId}')"><span class="ref-name">${rt.speaker}</span><span class="ref-text">"${(rt.text||'').slice(0,30)}..."</span></div>`;
+  }else if(rt.type==='research'){
+    return`<div class="ref-card ref-research"><span class="ref-name">研究</span><span class="ref-text">${rt.stepName}</span></div>`;
+  }else if(rt.type==='agent'){
+    return`<div class="ref-card ref-agent"><span class="ref-name">${rt.agentName}</span></div>`;
+  }
+  return'';
+}
+
+function highlightDialogue(id){
+  const item=document.querySelector(`.dialogue-item[data-id="${id}"]`);
+  if(item){item.classList.add('highlighted');item.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>item.classList.remove('highlighted'),3000);}
+}
+
+// ===== MODALS =====
+function showModal(id){document.getElementById(id).classList.add('active');}
+function hideModal(id){document.getElementById(id).classList.remove('active');}
+document.querySelectorAll('.modal-overlay').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)hideModal(m.id);});});
+
+// ===== REPORT =====
+function showReport(){
+  document.getElementById('appView').classList.add('hidden');
+  document.getElementById('reportView').classList.add('active');
+  renderReport();
+}
+function hideReport(){
+  document.getElementById('appView').classList.remove('hidden');
+  document.getElementById('reportView').classList.remove('active');
+}
+function renderReport(){
+  const body=document.getElementById('reportBody');
+  const dur=document.getElementById('duration').textContent;
+  const data=meetingRegistry[currentMeetingId];
+  const title=data?data.title:'会议报告';
+  // Get final summary blocks
+  const sv=data?data.summary:summaryVersions;
+  const finalSummary=sv&&sv.length>0?sv[sv.length-1]:null;
+  let summaryHTML='';
+  if(finalSummary){
+    summaryHTML=finalSummary.blocks.map(b=>`<div class="report-section"><div class="report-section-title"><div class="sb-icon" style="background:${b.color}">${sbIcons[b.icon]||sbIcons.target}</div>${b.title} <span class="summary-block-tag">${b.tag}</span></div><div class="summary-points">${b.points.map(p=>`<div class="summary-point">${p}</div>`).join('')}</div></div>`).join('');
+  }
+  body.innerHTML=`
+    <div class="report-title">${title}</div>
+    <div class="report-meta">2026.05.13 · 时长 ${dur} · 参会 ${data?data.dialogue.length+'条对话':'4人'} · ${extractedKeywords.length}个深度研究主题</div>
+    ${summaryHTML}
+    <div class="report-section">
+      <div class="report-section-title"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>深度研究报告</div>
+      ${extractedKeywords.map(kw=>`<div class="report-kw-block"><h4>${kw}</h4><p>研究完成 · 含文献检索、知识图谱、对比分析、时间线、可信度验证</p></div>`).join('')}
+    </div>
+    <div class="report-section">
+      <div class="report-section-title"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Agent讨论精华</div>
+      ${renderReportAgentHighlights()}
+    </div>
+    <div class="report-section">
+      <div class="report-section-title"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>会议回访</div>
+      <p style="font-size:13px;color:var(--text-secondary);cursor:pointer" onclick="hideReport()">← 点击返回完整会议记录（三栏原始视图）</p>
+    </div>`;
+}
+function renderReportAgentHighlights(){
+  const data=meetingRegistry[currentMeetingId];if(!data)return'';
+  const agentData=data.agents;
+  let html='';
+  extractedKeywords.forEach(kw=>{
+    const disc=agentData[kw];if(!disc)return;
+    const summaryMsg=disc.find(m=>m.agent==='summary');
+    if(summaryMsg){
+      html+=`<div class="report-agent-highlight"><span class="agent-tag">${kw}</span>${summaryMsg.text}</div>`;
+    }
+  });
+  return html||'<p style="color:var(--text-muted);font-size:13px">暂无Agent讨论数据</p>';
+}
+
+// ===== HISTORY / MEETING SWITCH =====
+document.getElementById('btnHistory').addEventListener('click',()=>showModal('historyModal'));
+const meetingStateCache={};
+
+function saveMeetingState(){
+  meetingStateCache[currentMeetingId]={
+    dom:{
+      dialogueList:document.getElementById('dialogueList').innerHTML,
+      summaryContent:document.getElementById('summaryContent').innerHTML,
+      researchArea:document.getElementById('researchArea').innerHTML,
+      agentChat:document.getElementById('agentChat').innerHTML,
+      hostLog:document.getElementById('hostLog').innerHTML,
+      keywordsBar:document.getElementById('keywordsBar').innerHTML
+    },
+    state:{isRunning,isPaused,seconds,dialogueIndex,extractedKeywords:[...extractedKeywords],currentKeyword,researchStarted:{...researchStarted},agentStarted:{...agentStarted},keywordExtractQueue:[...keywordExtractQueue]},
+    ui:{
+      hostBarActive:document.getElementById('hostBar').classList.contains('active'),
+      btnStartDisplay:document.getElementById('btnStart').style.display,
+      btnPauseDisplay:document.getElementById('btnPause').style.display,
+      btnStopDisplay:document.getElementById('btnStop').style.display,
+      btnPauseDisabled:document.getElementById('btnPause').disabled,
+      btnStopDisabled:document.getElementById('btnStop').disabled,
+      btnReportDisabled:document.getElementById('btnReport').disabled,
+      recBadgeActive:document.getElementById('recBadge').classList.contains('active'),
+      dialogueBadge:document.getElementById('dialogueBadge').textContent,
+      timerDisplay:document.getElementById('duration').textContent
+    }
+  };
+}
+
+function restoreMeetingState(meetingId){
+  const cached=meetingStateCache[meetingId];if(!cached)return false;
+  // Restore DOM
+  document.getElementById('dialogueList').innerHTML=cached.dom.dialogueList;
+  document.getElementById('summaryContent').innerHTML=cached.dom.summaryContent;
+  document.getElementById('researchArea').innerHTML=cached.dom.researchArea;
+  document.getElementById('agentChat').innerHTML=cached.dom.agentChat;
+  document.getElementById('hostLog').innerHTML=cached.dom.hostLog;
+  document.getElementById('keywordsBar').innerHTML=cached.dom.keywordsBar;
+  // Restore JS state
+  isRunning=cached.state.isRunning;isPaused=cached.state.isPaused;seconds=cached.state.seconds;
+  dialogueIndex=cached.state.dialogueIndex;extractedKeywords=[...cached.state.extractedKeywords];
+  currentKeyword=cached.state.currentKeyword;researchStarted={...cached.state.researchStarted};
+  agentStarted={...cached.state.agentStarted};keywordExtractQueue=[...cached.state.keywordExtractQueue];
+  // Restore UI state
+  document.getElementById('hostBar').classList.toggle('active',cached.ui.hostBarActive);
+  document.getElementById('btnStart').style.display=cached.ui.btnStartDisplay;
+  document.getElementById('btnPause').style.display=cached.ui.btnPauseDisplay||'';
+  document.getElementById('btnStop').style.display=cached.ui.btnStopDisplay||'';
+  document.getElementById('btnPause').disabled=cached.ui.btnPauseDisabled;
+  document.getElementById('btnStop').disabled=cached.ui.btnStopDisabled;
+  document.getElementById('btnReport').disabled=cached.ui.btnReportDisabled;
+  document.getElementById('recBadge').classList.toggle('active',cached.ui.recBadgeActive);
+  document.getElementById('dialogueBadge').textContent=cached.ui.dialogueBadge;
+  document.getElementById('duration').textContent=cached.ui.timerDisplay;
+  // Rebind keyword chips
+  document.querySelectorAll('.keyword-chip').forEach(chip=>{
+    chip.addEventListener('click',()=>selectKeyword(chip.textContent.trim()));
+  });
+  return true;
+}
+
+function loadMeeting(meetingId){
+  hideModal('historyModal');
+  if(meetingId===currentMeetingId)return;
+  const data=meetingRegistry[meetingId];if(!data)return;
+  saveMeetingState();
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+  currentMeetingId=meetingId;
+  document.getElementById('meetingTitle').textContent=data.title;
+  if(restoreMeetingState(meetingId)){
+    if(isRunning&&!isPaused)timerInterval=setInterval(updateTimer,1000);
+  }else{
+    resetMeetingState();
+    if(data.status==='ended'){
+      renderCompletedMeeting(data);
+    }else{
+      document.getElementById('btnStart').style.display='';
+      document.getElementById('btnReport').disabled=true;
+    }
+  }
+  document.querySelectorAll('.history-item').forEach(el=>{
+    el.classList.toggle('active',el.dataset.meeting===meetingId);
+  });
+}
+
+
+function resetMeetingState(){
+  isRunning=false;isPaused=false;seconds=0;dialogueIndex=0;
+  clearInterval(timerInterval);clearInterval(charInterval);
+  timerInterval=null;charInterval=null;
+  extractedKeywords=[];currentKeyword=null;
+  researchStarted={};agentStarted={};
+  document.getElementById('dialogueList').innerHTML='';
+  document.getElementById('summaryContent').innerHTML='';
+  document.getElementById('researchArea').innerHTML='';
+  document.getElementById('agentChat').innerHTML='<div class="empty-state" id="emptyAgents"><div class="dormant-grid" id="dormantGrid"></div><div class="empty-state-label">12位AI智能体待命中</div></div>';
+  document.getElementById('hostLog').innerHTML='';
+  document.getElementById('hostBar').classList.remove('active');
+  document.getElementById('btnStart').style.display='';
+  document.getElementById('btnPause').style.display='';
+  document.getElementById('btnStop').style.display='';
+  document.getElementById('btnPause').disabled=true;
+  document.getElementById('btnStop').disabled=true;
+  document.getElementById('btnReport').disabled=true;
+  document.getElementById('recBadge').classList.remove('active');
+  document.getElementById('dialogueBadge').textContent='等待开始';
+  document.getElementById('duration').textContent='00:00';
+  const kwBar=document.getElementById('keywordsBar');if(kwBar)kwBar.innerHTML='';
+  renderDormantGrid();
+}
+
+function renderCompletedMeeting(data){
+  document.getElementById('btnStart').style.display='none';
+  document.getElementById('btnPause').style.display='none';
+  document.getElementById('btnStop').style.display='none';
+  document.getElementById('hostBar').classList.add('active');
+  hostSetStatus('会议已结束');setHostAnim('idle');
+  document.getElementById('btnReport').disabled=false;
+  document.getElementById('dialogueBadge').textContent='已结束';
+  const list=document.getElementById('dialogueList');
+  insertAssistantMsg('大家好，我是会议助手小D。会议已开始录制，我会实时关注讨论内容，发现有价值的议题后自动启动深度研究，并组织AI智能体加入讨论。会议结束后将自动生成完整的会议报告。请畅所欲言～');
+  data.dialogue.forEach(msg=>{
+    const item=document.createElement('div');item.className='dialogue-item';item.dataset.id=msg.id;
+    item.innerHTML=`<div class="speaker-avatar" style="background:${msg.color}">${msg.speaker[0]}</div><div class="dialogue-content"><div class="speaker-name">${msg.speaker}</div><div class="dialogue-text"><span class="tc">${msg.text}</span></div></div>`;
+    list.appendChild(item);
+  });
+  if(data.summary&&data.summary.length>0){
+    renderSummary(data.summary[data.summary.length-1]);
+  }
+  const area=document.getElementById('researchArea');
+  const keywords=data.keywords.map(k=>k.text);
+  keywords.forEach((kw,ki)=>{
+    extractedKeywords.push(kw);
+    researchStarted[kw]='done';
+    const rd=data.research[kw];if(!rd)return;
+    const group=document.createElement('div');group.className='research-kw-group'+(ki===0?' visible':'');group.dataset.kw=kw;
+    const tl=document.createElement('div');tl.className='step-timeline';group.appendChild(tl);
+    rd.steps.forEach((step,i)=>renderStep(tl,step,i+1));
+    area.appendChild(group);
+  });
+  currentKeyword=keywords[0]||null;
+  renderKeywords();
+  const chatEl=document.getElementById('agentChat');
+  const emptyA=document.getElementById('emptyAgents');if(emptyA)emptyA.style.display='none';
+  keywords.forEach((kw,ki)=>{
+    const disc=data.agents[kw];if(!disc)return;
+    const group=document.createElement('div');group.className='agent-discussion-group'+(ki===0?' visible':'');group.dataset.kw=kw;
+    disc.forEach((msg,i)=>{
+      const agent=allAgents.find(a=>a.id===msg.agent);if(!agent)return;
+      const msgEl=document.createElement('div');msgEl.className='agent-msg';
+      msgEl.innerHTML=`<div class="agent-avatar"><img src="${getAvatarUrl(agent.id)}"></div><div class="agent-bubble"><div class="agent-name" style="color:${agent.color}">${agent.name} <span class="agent-role">${agent.role}</span></div><div class="agent-text">${msg.text}</div></div>`;
+      group.appendChild(msgEl);
+    });
+    chatEl.appendChild(group);
+  });
+  hostLog('查看历史会议记录');
+}
+
+function newMeeting(){
+  hideModal('historyModal');
+  saveMeetingState();
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+  currentMeetingId='enzyme';
+  delete meetingStateCache['enzyme'];
+  resetMeetingState();
+  document.getElementById('meetingTitle').textContent='酶设计技术路线讨论';
+  document.getElementById('btnStart').style.display='';
+  keywordExtractQueue=[...keywordsToExtract];
+  dialogueIndex=0;
+}
+</script>
+</body>
+</html>
